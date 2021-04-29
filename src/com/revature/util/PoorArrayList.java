@@ -2,8 +2,6 @@ package com.revature.util;
 
 import java.util.Arrays;
 
-import java.util.Arrays;
-
 /*
     As the class name suggests, a poor man's (and probably scuffed) implementation of a dynamically sized array.
  */
