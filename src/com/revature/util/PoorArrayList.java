@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 /*
     As the class name suggests, a poor man's (and probably scuffed) implementation of a dynamically sized array.
+    This class exists because I am not allowed to use any of the java.util collections for this project.
  */
 public class PoorArrayList<E> implements Iterable<E> {
     private Object[] storage;
@@ -63,6 +64,7 @@ public class PoorArrayList<E> implements Iterable<E> {
         size--;
     }
 
+    //Iterator implementation. Hooray for foreach loops!
     @Override
     public Iterator<E> iterator () {
         Iterator<E> iterator = new Iterator<E>() {
