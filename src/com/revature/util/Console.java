@@ -25,7 +25,7 @@ public class Console {
      *
      * @param scanner The scanner passed into this method.
      * @param prompt The prompt to be shown to the user.
-     * @return
+     * @return The number the user enters, so long as it is a whole number
      */
     public static int getInt(Scanner scanner, String prompt) {
         int number = 0;
@@ -48,7 +48,7 @@ public class Console {
      *
      * @param scanner The scanner passed into this method.
      * @param prompt The prompt to be shown to the user.
-     * @return
+     * @return The number the user enters.
      */
     public static double getDouble(Scanner scanner, String prompt) {
         double number = 0.0;
