@@ -1,11 +1,12 @@
 package com.revature.util;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 /*
     As the class name suggests, a poor man's (and probably scuffed) implementation of a dynamically sized array.
  */
-public class PoorArrayList<E> {
+public class PoorArrayList<E> implements Iterable<E> {
     private Object[] storage;
     private final int DEFAULT_CAPACITY = 10;
     private int size = 0;
@@ -43,6 +44,7 @@ public class PoorArrayList<E> {
     }
 
     //Ensures the specified index is not out of bounds, then retrieves the object at the index.
+    @SuppressWarnings("unchecked")
     public E get(int index) {
         if (index >= size || index < 0)
             throw new IndexOutOfBoundsException(String.format("Index: %d Size: %d", index, size));
@@ -59,5 +61,24 @@ public class PoorArrayList<E> {
         }
         storage = copy;
         size--;
+    }
+
+    @Override
+    public Iterator<E> iterator () {
+        Iterator<E> iterator = new Iterator<E>() {
+            private int cursor = 0;
+
+            @Override
+            public boolean hasNext() {
+                return cursor < size && storage[cursor] != null;
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public E next() {
+                return (E) storage[cursor++];
+            }
+        };
+        return iterator;
     }
 }
