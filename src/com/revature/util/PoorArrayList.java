@@ -3,9 +3,11 @@ package com.revature.util;
 import java.util.Arrays;
 import java.util.Iterator;
 
-/*
-    As the class name suggests, a poor man's (and probably scuffed) implementation of a dynamically sized array.
-    This class exists because I am not allowed to use any of the java.util collections for this project.
+/**
+    PoorArrayList
+
+    As the name suggests, a poor man's implementation of a dynamically sized array, the data structure of choice
+    I will be using for this project.
  */
 public class PoorArrayList<E> implements Iterable<E> {
     private Object[] storage;
@@ -20,31 +22,48 @@ public class PoorArrayList<E> implements Iterable<E> {
         this.storage = new Object[capacity];
     }
 
-    //Adds an element to the array. If the array is full, increaseCapacity() is called to double the size.
+    /**
+     * Adds an element to the back of the array. Doubles the size of the array if the size is full.
+     * @param e The data to be added
+     */
     public void add(E e) {
         if (size == storage.length)
             increaseCapacity();
         storage[size++] = e;
     }
 
-    //Doubles the capacity of the array.
+    /**
+     * Doubles doubles the size of the array.
+     */
     private void increaseCapacity() {
         int newSize = storage.length * 2;
         this.storage = Arrays.copyOf(storage, newSize);
     }
 
-    //Ensures the index is not out of bounds, then reassigns the object at the index.
-    public void change(int index, E e) {
+    /**
+     * Changes the element of the array to the data passed in.
+     * @param index The specified index.
+     * @param e The new data at the index
+     */
+    public void change(int index, E e) { //TODO Decide if I even need this method.
         if (index >= size || index < 0)
             throw new IndexOutOfBoundsException(String.format("Index: %d Size: %d", index, size));
         storage[index - 1] = e;
     }
 
+    /**
+     *
+     * @return The size of the array
+     */
     public int size() {
         return this.size;
     }
 
-    //Ensures the specified index is not out of bounds, then retrieves the object at the index.
+    /**
+     * Gets the element at the specified index.
+     * @param index The index to be retrieved.
+     * @return The data in the element.
+     */
     @SuppressWarnings("unchecked")
     public E get(int index) {
         if (index >= size || index < 0)
@@ -52,8 +71,11 @@ public class PoorArrayList<E> implements Iterable<E> {
         return (E) storage[index];
     }
 
-    //Removes the specified index from the array
-    public void removeAt(int index) {
+    /**
+     * Removes the index of the array.
+     * @param index The index to be removed
+     */
+    public void removeAt(int index) { //TODO Decide if I even need this method.
         Object[] copy = new Object[storage.length - 1];
 
         for (int i = 0, j = 0; i < storage.length; i++) {
