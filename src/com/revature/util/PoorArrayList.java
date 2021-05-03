@@ -9,7 +9,7 @@ import java.util.Iterator;
     As the name suggests, a poor man's implementation of a dynamically sized array, the data structure of choice
     I will be using for this project.
  */
-public class PoorArrayList<E> implements Iterable<E> {
+public class PoorArrayList<E> implements List<E> {
     private Object[] storage;
     private final int DEFAULT_CAPACITY = 10;
     private int size = 0;
