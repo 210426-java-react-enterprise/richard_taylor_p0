@@ -26,3 +26,5 @@ hs_err_pid*
 *.iml
 /.idea
 
+#build files
+target/
