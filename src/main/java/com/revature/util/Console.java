@@ -61,8 +61,8 @@ public class Console {
         boolean valid = false;
         while(!valid) {
             System.out.print(prompt);
-            if(scanner.hasNextInt()) {
-                number = scanner.nextInt();
+            if(scanner.hasNextDouble()) {
+                number = scanner.nextDouble();
                 valid = true;
             } else {
                 System.err.print("Error! Input must be a number.");
