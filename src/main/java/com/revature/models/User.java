@@ -2,31 +2,35 @@ package com.revature.models;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class User {
 
+    private int userID;
     private String userName;
     private String password;
     private String email;
     private String firstName;
     private String lastName;
     private LocalDate birthday; //TODO calculate age from birthday
+    private LocalDate joinedDate;
     private int age;
 
     public User() {
 
     }
 
-    public User (String userName, String password, String email, String firstName, String lastName, LocalDate birthday,
+    public User (int userID, String userName, String password, String email, String firstName, String lastName, LocalDate birthday,
                  int age) {
+        this.userID = userID;
         this.setUserName(userName);
         this.setPassword(password);
         this.setEmail(email);
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setBirthday(birthday);
-        this.setAge(age);
+        this.setJoinedDate(LocalDate.now());
+        this.setAge((int) ChronoUnit.YEARS.between(birthday, LocalDate.now()));
     }
 
 
@@ -84,5 +88,17 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public LocalDate getJoinedDate() {
+        return joinedDate;
+    }
+
+    public void setJoinedDate(LocalDate joinedDate) {
+        this.joinedDate = joinedDate;
+    }
+
+    public int getUserID() {
+        return userID;
     }
 }
