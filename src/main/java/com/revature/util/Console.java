@@ -14,15 +14,20 @@ import java.util.regex.*;
  */
 public class Console {
 
-    private static final Scanner scanner = new Scanner(System.in);
-    private static final Pattern EMAIL_REGEX = Pattern.compile("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$"); //shamelessly copied from the internet
+    private Scanner scanner;
+    private Pattern emailRegex;  //shamelessly copied from the internet
+
+    public Console() {
+        this.scanner = new Scanner(System.in);
+        this.emailRegex = Pattern.compile("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$"); //shamelessly copied from the internet
+    }
 
     /**
      * Gets a string from the user. Does not perform any form of validation.
      * @param prompt The prompt to be shown to the user
      * @return the string the user enters.
      */
-    public static String getString(String prompt) {
+    public String getString(String prompt) {
         System.out.print(prompt);
 
         return scanner.nextLine();
@@ -34,7 +39,7 @@ public class Console {
      * @param prompt The prompt to be shown to the user.
      * @return The number the user enters, so long as it is a whole number
      */
-    public static int getInt(String prompt) {
+    public int getInt(String prompt) {
         int number = 0;
         boolean valid = false;
         while(!valid) {
@@ -56,7 +61,7 @@ public class Console {
      * @param prompt The prompt to be shown to the user.
      * @return The number the user enters.
      */
-    public static double getDouble(String prompt) {
+    public double getDouble(String prompt) {
         double number = 0.0;
         boolean valid = false;
         while(!valid) {
@@ -75,7 +80,7 @@ public class Console {
     /**
      * TODO create documentation, and finish implementation
      */
-    public static LocalDate getDate(String prompt) {
+    public LocalDate getDate(String prompt) {
         boolean valid = false;
         String input = "";
         LocalDate Date = null;
@@ -97,13 +102,13 @@ public class Console {
     }
 
     //TODO create javadoc
-    public static String getEmail (String prompt) {
+    public String getEmail (String prompt) {
         String email = "";
         System.out.print(prompt);
 
         while (true) {
             email = scanner.nextLine();
-            Matcher matcher = EMAIL_REGEX.matcher(email);
+            Matcher matcher = emailRegex.matcher(email);
             boolean valid = matcher.find();
             if (!valid) {
                 System.err.print("Error: Email was in an incorrect format. Please enter a valid email: ");
@@ -112,5 +117,4 @@ public class Console {
             }
         }
     }
-
 }
