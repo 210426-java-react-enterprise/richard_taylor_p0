@@ -1,7 +1,8 @@
 package com.revature.models;
 
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class User {
@@ -12,15 +13,15 @@ public class User {
     private String email;
     private String firstName;
     private String lastName;
-    private LocalDate birthday; //TODO calculate age from birthday
-    private LocalDate joinedDate;
+    private LocalDateTime birthday; //TODO calculate age from birthday
+    private LocalDateTime joinedDate;
     private int age;
 
     public User() {
 
     }
 
-    public User (int userID, String userName, String password, String email, String firstName, String lastName, LocalDate birthday,
+    public User (int userID, String userName, String password, String email, String firstName, String lastName, LocalDateTime birthday,
                  int age) {
         this.userID = userID;
         this.setUserName(userName);
@@ -29,8 +30,8 @@ public class User {
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setBirthday(birthday);
-        this.setJoinedDate(LocalDate.now());
-        this.setAge((int) ChronoUnit.YEARS.between(birthday, LocalDate.now()));
+        this.setJoinedDate(LocalDateTime.now());
+        this.setAge(age);
     }
 
 
@@ -74,11 +75,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public LocalDate getBirthday() {
+    public LocalDateTime getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(LocalDateTime birthday) {
         this.birthday = birthday;
     }
 
@@ -90,15 +91,29 @@ public class User {
         this.age = age;
     }
 
-    public LocalDate getJoinedDate() {
+    public LocalDateTime getJoinedDate() {
         return joinedDate;
     }
 
-    public void setJoinedDate(LocalDate joinedDate) {
+    public void setJoinedDate(LocalDateTime joinedDate) {
         this.joinedDate = joinedDate;
     }
 
     public int getUserID() {
         return userID;
+    }
+
+    public void setUserID(int userID){
+        this.userID = userID;
+    }
+
+    public String getBirthdayFormatted() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00");
+        return formatter.format(birthday);
+    }
+
+    public String getJoinedDayFormatted() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00");
+        return formatter.format(joinedDate);
     }
 }

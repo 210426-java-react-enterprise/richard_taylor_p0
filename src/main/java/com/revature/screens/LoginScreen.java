@@ -8,7 +8,6 @@ public class LoginScreen extends Screen {
 
     private Console console;
 
-
     public LoginScreen(Console console) {
         super("LoginScreen", "/login");
         this.console = console;
@@ -16,6 +15,7 @@ public class LoginScreen extends Screen {
 
     @Override
     public void render() {
+        System.out.println("gets here");
 
     }
 }

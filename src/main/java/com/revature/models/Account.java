@@ -3,6 +3,8 @@ package com.revature.models;
 public class Account {
     private User user;
     private double balance;
+    private String name;
+    private boolean isActive;
 
     public Account(User user) {
         this.user = user;

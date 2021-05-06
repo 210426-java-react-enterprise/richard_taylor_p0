@@ -1,5 +1,6 @@
 package com.revature.util;
 
+import com.revature.daos.UserDAO;
 import com.revature.screens.Dashboard;
 import com.revature.screens.LoginScreen;
 import com.revature.screens.RegisterScreen;
@@ -11,18 +12,18 @@ public class AppState {
     private ScreenRouter screenRouter;
     private boolean appRunning;
 
-    public AppState () {
+    public AppState() {
         System.out.println("Initializing application");
 
         setAppRunning(true);
         console = new Console();
-        //TODO initialize userDAO when created
+        UserDAO userDAO = new UserDAO();
 
-        screenRouter = new ScreenRouter()
-                .addScreen(new WelcomeScreen(console))
+        screenRouter = new ScreenRouter();
+        screenRouter.addScreen(new WelcomeScreen(console, userDAO, screenRouter))
                 .addScreen(new LoginScreen(console))
                 .addScreen(new Dashboard(console))
-                .addScreen(new RegisterScreen(console));
+                .addScreen(new RegisterScreen(console, userDAO));
 
         System.out.println("Application ready");
 

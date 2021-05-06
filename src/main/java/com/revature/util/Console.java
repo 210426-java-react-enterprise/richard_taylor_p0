@@ -1,6 +1,5 @@
 package com.revature.util;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -10,7 +9,7 @@ import java.util.regex.*;
 /**
  * Console
  *
- * This class is used to get input from the user while performing basic validation.
+ * This class is used to get input from the user while performing basic type validation.
  */
 public class Console {
 
@@ -80,19 +79,19 @@ public class Console {
     /**
      * TODO create documentation, and finish implementation
      */
-    public LocalDate getDate(String prompt) {
+    public LocalDateTime getDate(String prompt) {
         boolean valid = false;
         String input = "";
-        LocalDate Date = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime Date = null;
         System.out.print(prompt);
 
         while (!valid) {
             try {
                 input = scanner.next();
-                Date = LocalDate.parse(input, formatter);
+                input = input.concat("T00:00:00.000");
+                Date = LocalDateTime.parse(input);
             } catch (DateTimeParseException e) {
-                System.err.println("Invalid date format.");
+                System.err.println("Invalid date format. Please try again\n" + e.getMessage() + "\nValid format: yyyy-MM-dd");
                 continue;
             }
             scanner.nextLine();
