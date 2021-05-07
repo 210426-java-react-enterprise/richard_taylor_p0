@@ -116,4 +116,20 @@ public class User {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00");
         return formatter.format(joinedDate);
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("userID=").append(userID);
+        sb.append(", userName='").append(userName).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", firstName='").append(firstName).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", birthday=").append(birthday);
+        sb.append(", joinedDate=").append(joinedDate);
+        sb.append(", age=").append(age);
+        sb.append('}');
+        return sb.toString();
+}
 }

@@ -43,4 +43,32 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
+
+    public User getUserByUserNameAndPassword(String username, String password) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            User user = null;
+            String query = "select * from project0.users where username = ? and password = ?;";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                user = new User();
+                user.setUserID((rs.getInt("userid")));
+                user.setUserName(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setEmail(rs.getString("email"));
+                user.setFirstName(rs.getString("first_name"));
+                user.setLastName(rs.getString("last_name"));
+                user.setBirthday(rs.getTimestamp("birthday").toLocalDateTime());
+                user.setJoinedDate(rs.getTimestamp("joined_date").toLocalDateTime());
+                user.setAge(rs.getInt("age"));
+            }
+            return user;
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
