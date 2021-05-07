@@ -41,4 +41,38 @@ public class AccountDAO {
         }
         return null;
     }
+
+    public void openAccount(int userID, String accountName, double initialBalance) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String query = "insert into project0.account (account_name, balance)\n" +
+                    "values (?, ?);";
+            int newID = 0;
+            PreparedStatement stmt = conn.prepareStatement(query, new String[] {"accountid"});
+            stmt.setString(1, accountName);
+            stmt.setDouble(2, initialBalance);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected != 0) {
+                ResultSet rs = stmt.getGeneratedKeys();
+                while (rs.next()) {
+                    newID = rs.getInt("accountid");
+                }
+            }
+            linkAccount(userID, newID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void linkAccount(int userID, int accountID) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String query = "insert into project0.users_account (accountid, userid)\n" +
+                    "values (?, ?);";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, accountID);
+            stmt.setInt(2, userID);
+            int result = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

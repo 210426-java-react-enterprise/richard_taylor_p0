@@ -40,14 +40,16 @@ public class Dashboard extends Screen {
 
         switch (choice) {
             case "1":
-                //code here
-                break;
-            case "2":
                 List<Account> accounts = accountDAO.getAccountsByUserID(loggedInUser);
                 for (Account account: accounts) {
                     System.out.printf("Name: %s\n", account.getName());
                     System.out.printf("Balance: %f\n", account.getBalance());
                 }
+                break;
+            case "2":
+                String accountName = console.getString("Enter a Name: ");
+                double initialBalance = console.getDouble("Enter an initial deposit: ");
+                accountDAO.openAccount(loggedInUser.getUserID(), accountName, initialBalance);
                 break;
             case "3":
                 break;
