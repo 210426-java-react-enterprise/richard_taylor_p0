@@ -101,7 +101,7 @@ public class Console {
     }
 
     //TODO create javadoc
-    public String getEmail (String prompt) {
+    public String getEmail(String prompt) {
         String email = "";
         System.out.print(prompt);
 
