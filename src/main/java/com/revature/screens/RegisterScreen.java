@@ -23,7 +23,7 @@ public class RegisterScreen extends Screen {
         User user = new User();
         user.setUserName(console.getString("Enter a username: "));
         user.setPassword(console.getString("Enter a password: "));
-        user.setEmail(console.getString("Enter an email address: "));
+        user.setEmail(console.getEmail("Enter an email address: "));
         user.setFirstName(console.getString("Enter your first name: "));
         user.setLastName(console.getString("Enter your last name: "));
         user.setBirthday(console.getDate("Enter your birthday (yyyy-MM-dd): "));
