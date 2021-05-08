@@ -48,7 +48,7 @@ public class PoorArrayList<E> implements List<E> {
     public void change(int index, E e) { //TODO Decide if I even need this method.
         if (index >= size || index < 0)
             throw new IndexOutOfBoundsException(String.format("Index: %d Size: %d", index, size));
-        storage[index - 1] = e;
+        storage[index] = e;
     }
 
     /**
@@ -66,8 +66,10 @@ public class PoorArrayList<E> implements List<E> {
      */
     @SuppressWarnings("unchecked")
     public E get(int index) {
+
         if (index >= size || index < 0)
             throw new IndexOutOfBoundsException(String.format("Index: %d Size: %d", index, size));
+
         return (E) storage[index];
     }
 
@@ -76,6 +78,10 @@ public class PoorArrayList<E> implements List<E> {
      * @param index The index to be removed
      */
     public void removeAt(int index) { //TODO Decide if I even need this method.
+
+        if (index >= size || index < 0)
+            throw new IndexOutOfBoundsException(String.format("Index: %d Size: %d", index, size));
+
         Object[] copy = new Object[storage.length - 1];
 
         for (int i = 0, j = 0; i < storage.length; i++) {
