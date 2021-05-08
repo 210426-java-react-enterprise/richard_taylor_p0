@@ -17,7 +17,7 @@ public class UserDAO {
 
     }
 
-    public void saveUserToDataBase(User user) {
+    public User save(User user) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String query = "insert into project0.users (username, password, email, first_name, last_name, birthday, joined_date, \"age\")" +
                     " values (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -42,6 +42,7 @@ public class UserDAO {
         } catch(SQLException e) {
             e.printStackTrace();
         }
+        return user;
     }
 
     public User getUserByUserNameAndPassword(String username, String password) {
@@ -70,5 +71,44 @@ public class UserDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean isUserNameAvailable(String username) {
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+
+            String query = "select * from project0.users where username = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    public boolean isEmailAvailable(String email) {
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+
+            String query = "select * from project0.users where email = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, email);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 }

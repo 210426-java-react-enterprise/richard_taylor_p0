@@ -1,5 +1,6 @@
 package com.revature.screens;
 
+import com.revature.Exceptions.ResourcePersistenceException;
 import com.revature.daos.AccountDAO;
 import com.revature.daos.UserDAO;
 import com.revature.main.Driver;
@@ -42,23 +43,32 @@ public class Dashboard extends Screen {
         switch (choice) {
             case "1":
                 List<Account> accounts = userService.getAccounts(loggedInUser);
+
                 if(accounts == null) {
                     System.out.println("You do not have any registered accounts"); //prevent NPE
                     break;
                 }
+
                 for (Account account: accounts) {
                     System.out.printf("Name: %s\n", account.getName());
                     System.out.printf("Balance: %f\n==========================\n", account.getBalance());
                 }
+
                 String name = console.getString("Specify the account name: ");
                 Account accountOfChoice = userService.getAccountByName(accounts, name);
+
                 Driver.getAppState().setActiveAccount(accountOfChoice);
                 screenRouter.navigate("/account");
                 break;
             case "2":
                 String accountName = console.getString("Enter a Name: ");
                 double initialBalance = console.getDouble("Enter an initial deposit: ", 0, Double.MAX_VALUE);
-                userService.openUserAccount(loggedInUser, accountName, initialBalance);
+
+                try {
+                    userService.openUserAccount(loggedInUser, accountName, initialBalance);
+                } catch (ResourcePersistenceException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "3":
                 break;
