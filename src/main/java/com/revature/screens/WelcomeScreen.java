@@ -12,7 +12,7 @@ public class WelcomeScreen extends Screen {
     private Console console;
     private ScreenRouter router;
 
-    public WelcomeScreen(Console console, UserDAO userDAO, ScreenRouter router) {
+    public WelcomeScreen(Console console, ScreenRouter router) {
         super("WelcomeScreen", "/welcome");
         this.console = console;
         this.router = router;

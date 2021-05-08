@@ -75,4 +75,18 @@ public class AccountDAO {
             e.printStackTrace();
         }
     }
+
+    public void saveBalance(double newBalance, int accountID) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String query = "update project0.account set balance = ? where accountid = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setDouble(1, newBalance);
+            stmt.setInt(2, accountID);
+
+            int rowsUpdated = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

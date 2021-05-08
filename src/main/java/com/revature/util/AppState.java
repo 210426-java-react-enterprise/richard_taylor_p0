@@ -2,11 +2,10 @@ package com.revature.util;
 
 import com.revature.daos.AccountDAO;
 import com.revature.daos.UserDAO;
+import com.revature.models.Account;
 import com.revature.models.User;
-import com.revature.screens.Dashboard;
-import com.revature.screens.LoginScreen;
-import com.revature.screens.RegisterScreen;
-import com.revature.screens.WelcomeScreen;
+import com.revature.screens.*;
+import com.revature.services.UserService;
 
 public class AppState {
 
@@ -14,6 +13,8 @@ public class AppState {
     private ScreenRouter screenRouter;
     private boolean appRunning;
     private User loggedInUser;
+    private Account activeAccount;
+    private UserService userService;
 
     public AppState() {
         System.out.println("Initializing application");
@@ -22,12 +23,15 @@ public class AppState {
         console = new Console();
         UserDAO userDAO = new UserDAO();
         AccountDAO accountDAO = new AccountDAO();
+        userService = new UserService(userDAO, accountDAO);
+
 
         screenRouter = new ScreenRouter();
-        screenRouter.addScreen(new WelcomeScreen(console, userDAO, screenRouter))
+        screenRouter.addScreen(new WelcomeScreen(console, screenRouter))
                 .addScreen(new LoginScreen(console, userDAO, screenRouter))
-                .addScreen(new Dashboard(console, screenRouter, userDAO, accountDAO))
-                .addScreen(new RegisterScreen(console, userDAO));
+                .addScreen(new Dashboard(console, screenRouter, userDAO, userService))
+                .addScreen(new RegisterScreen(console, userService))
+                .addScreen(new AccountScreen(console, userDAO, screenRouter, accountDAO));
 
         System.out.println("Application ready");
 
@@ -56,5 +60,13 @@ public class AppState {
 
     public void setLoggedInUser(User loggedInUser) {
         this.loggedInUser = loggedInUser;
+    }
+
+    public Account getActiveAccount() {
+        return activeAccount;
+    }
+
+    public void setActiveAccount(Account activeAccount) {
+        this.activeAccount = activeAccount;
     }
 }

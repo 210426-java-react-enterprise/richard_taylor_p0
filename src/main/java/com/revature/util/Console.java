@@ -8,7 +8,7 @@ import java.util.regex.*;
 
 /**
  * Console
- *
+ * <p>
  * This class is used to get input from the user while performing basic type validation.
  */
 public class Console {
@@ -23,6 +23,7 @@ public class Console {
 
     /**
      * Gets a string from the user. Does not perform any form of validation.
+     *
      * @param prompt The prompt to be shown to the user
      * @return the string the user enters.
      */
@@ -41,9 +42,9 @@ public class Console {
     public int getInt(String prompt) {
         int number = 0;
         boolean valid = false;
-        while(!valid) {
+        while (!valid) {
             System.out.print(prompt);
-            if(scanner.hasNextInt()) {
+            if (scanner.hasNextInt()) {
                 number = scanner.nextInt();
                 valid = true;
             } else {
@@ -63,13 +64,31 @@ public class Console {
     public double getDouble(String prompt) {
         double number = 0.0;
         boolean valid = false;
-        while(!valid) {
+        while (!valid) {
             System.out.print(prompt);
-            if(scanner.hasNextDouble()) {
+            if (scanner.hasNextDouble()) {
                 number = scanner.nextDouble();
                 valid = true;
             } else {
                 System.err.print("Error! Input must be a number.");
+            }
+            scanner.nextLine();
+        }
+        return number;
+    }
+
+    public double getDouble(String prompt, double min, double max) {
+        double number = 0.0;
+        boolean valid = false;
+        System.out.print(prompt);
+        while (!valid) {
+            if (scanner.hasNextDouble()) {
+                number = scanner.nextDouble();
+                if (number >= min && number <= max) {
+                    valid = true;
+                } else {
+                    System.err.printf("Please input a number between %.2f and %.2f: ", min, max);
+                }
             }
             scanner.nextLine();
         }
@@ -91,7 +110,7 @@ public class Console {
                 input = input.concat("T00:00:00.000");
                 Date = LocalDateTime.parse(input);
             } catch (DateTimeParseException e) {
-                System.err.println("Invalid date format. Please try again\n" + e.getMessage() + "\nValid format: yyyy-MM-dd");
+                System.err.print("Invalid date format. Please try again\n" + e.getMessage() + "\nValid format: yyyy-MM-dd");
                 continue;
             }
             scanner.nextLine();

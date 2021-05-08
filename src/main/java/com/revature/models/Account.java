@@ -27,6 +27,10 @@ public class Account {
         balance = getBalance() + amount;
     }
 
+    public void subtractBalance (double amount) {
+        balance = getBalance() - amount;
+    }
+
     public String getName() {
         return name;
     }
