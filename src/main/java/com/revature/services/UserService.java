@@ -1,5 +1,7 @@
 package com.revature.services;
 
+import com.revature.Exceptions.InvalidRequestException;
+import com.revature.Exceptions.ResourcePersistenceException;
 import com.revature.daos.AccountDAO;
 import com.revature.daos.UserDAO;
 import com.revature.models.Account;
@@ -29,12 +31,22 @@ public class UserService {
         return user.getAge() >= 0 && user.getAge() <= 200;
     }
 
-    public void registerUser(User user) {
+    public void registerUser(User user) throws InvalidRequestException, ResourcePersistenceException {
+
         if (!isValidUser(user)) {
-            System.err.println("One of more fields did not contain valid input.");
-        } else {
-            userDAO.saveUserToDataBase(user);
+            throw new InvalidRequestException("Invalid user data was provided!");
         }
+
+        if(!userDAO.isUserNameAvailable(user.getUserName())) {
+            throw new ResourcePersistenceException("The username provided is already in use.");
+        }
+
+        if(!userDAO.isEmailAvailable(user.getEmail())) {
+            throw new ResourcePersistenceException("The email provided is already in use.");
+        }
+
+        userDAO.saveUserToDataBase(user);
+
     }
 
     public Account getAccountByName(List<Account> accounts, String name) {
@@ -44,7 +56,9 @@ public class UserService {
                 accountToReturn = account;
             }
         }
+
         return  accountToReturn;
+
     }
 
     public boolean hasAccountName (User user, String name) {
@@ -60,11 +74,11 @@ public class UserService {
         return false;
     }
 
-    public void openUserAccount(User user, String name, double initialBalance) {
+    public void openUserAccount(User user, String name, double initialBalance) throws ResourcePersistenceException {
         if (!hasAccountName(user, name)) {
             accountDAO.openAccount(user.getUserID(), name, initialBalance);
         } else {
-            System.err.println("You already have an account with this name.");
+            throw new ResourcePersistenceException("You already have an account with this name");
         }
     }
 
