@@ -35,27 +35,38 @@ public class AccountScreen extends Screen {
         System.out.println("Please choose an option");
         System.out.println("1) Deposit funds");
         System.out.println("2) Withdraw funds");
-        System.out.println("3) Back to dashboard");
+        System.out.println("3) Make a transfer");
+        System.out.println("4) Back to dashboard");
         String choice = console.getString("> ");
         double amount = 0.0;
 
         switch (choice) {
             case "1":
                 amount = console.getDouble("Enter an amount: ", 0, Double.MAX_VALUE);
-                activeAccount.addBalance(amount);
-                accountDAO.saveBalance(activeAccount.getBalance(), activeAccount.getAccountID());
+                accountDAO.addBalance(amount, activeAccount.getAccountID());
                 System.out.printf("Your new balance is: %f\n", activeAccount.getBalance());
                 screenRouter.navigate("/dashboard");
                 break;
             case "2":
                 amount = console.getDouble("Enter an amount: ", 0, activeAccount.getBalance());
-                activeAccount.subtractBalance(amount);
-                accountDAO.saveBalance(activeAccount.getBalance(), activeAccount.getAccountID());
-                System.out.printf("Your new balance is: %f\n", activeAccount.getBalance());
+                accountDAO.subtractBalance(amount, activeAccount.getAccountID());
+                System.out.printf("Your new balance is: %f\n", activeAccount.getBalance() - amount);
                 screenRouter.navigate("/dashboard");
                 break;
             case "3":
+                amount = console.getDouble("Enter an amount: ", 0, activeAccount.getBalance());
+                int recipient = console.getInt("Enter the account id of the recipient: ");
+                if(accountDAO.accountExists(recipient)) {
+                    accountDAO.subtractBalance(amount, activeAccount.getAccountID());
+                    accountDAO.addBalance(amount, recipient);
+                    System.out.println("Transfer successful!");
+                } else {
+                    System.out.println("Transfer failed. The account specified does not exist.");
+                }
+                break;
+            case "4":
                 screenRouter.navigate("/dashboard");
+                break;
             default:
                 System.out.println("Your choice was invalid");
         }

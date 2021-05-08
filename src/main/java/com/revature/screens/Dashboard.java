@@ -1,5 +1,6 @@
 package com.revature.screens;
 
+import com.revature.Exceptions.InvalidRequestException;
 import com.revature.Exceptions.ResourcePersistenceException;
 import com.revature.daos.AccountDAO;
 import com.revature.daos.UserDAO;
@@ -43,21 +44,27 @@ public class Dashboard extends Screen {
         switch (choice) {
             case "1":
                 List<Account> accounts = userService.getAccounts(loggedInUser);
-
+                Account accountOfChoice;
                 if(accounts == null) {
                     System.out.println("You do not have any registered accounts"); //prevent NPE
                     break;
                 }
 
                 for (Account account: accounts) {
+                    System.out.printf("Account ID: %s\n", account.getAccountID());
                     System.out.printf("Name: %s\n", account.getName());
                     System.out.printf("Balance: %f\n==========================\n", account.getBalance());
                 }
 
                 String name = console.getString("Specify the account name: ");
-                Account accountOfChoice = userService.getAccountByName(accounts, name);
 
-                Driver.getAppState().setActiveAccount(accountOfChoice);
+                try {
+                    accountOfChoice = userService.getAccountByName(accounts, name);
+                    Driver.getAppState().setActiveAccount(accountOfChoice);
+                } catch (InvalidRequestException e) {
+                    System.out.println(e.getMessage());
+                    this.render(); //gross, but the easiest way to handle this without making the user log in again.
+                }
                 screenRouter.navigate("/account");
                 break;
             case "2":

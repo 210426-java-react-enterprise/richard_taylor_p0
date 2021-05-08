@@ -76,17 +76,48 @@ public class AccountDAO {
         }
     }
 
-    public void saveBalance(double newBalance, int accountID) {
+    public void addBalance(double amount, int accountID) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String query = "update project0.account set balance = ? where accountid = ?";
+            String query = "update project0.account set balance = balance + ? where accountid = ?";
 
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setDouble(1, newBalance);
+            stmt.setDouble(1, amount);
             stmt.setInt(2, accountID);
 
             int rowsUpdated = stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void subtractBalance(double amount, int accountID) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String query = "update project0.account set balance = balance - ? where accountid = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setDouble(1, amount);
+            stmt.setInt(2, accountID);
+
+            int rowsUpdated = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean accountExists(int accountID) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String query = "select * from project0.account where accountid = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, accountID);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; //return false by default to prevent people from sending money into the void.
     }
 }

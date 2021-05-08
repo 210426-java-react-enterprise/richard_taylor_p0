@@ -48,13 +48,17 @@ public class UserService {
 
     }
 
-    public Account getAccountByName(List<Account> accounts, String name) {
+    public Account getAccountByName(List<Account> accounts, String name) throws InvalidRequestException {
+
         Account accountToReturn = null;
         for (Account account: accounts) {
             if(account.getName().equals(name)) {
                 accountToReturn = account;
             }
         }
+
+        if (accountToReturn == null)
+            throw new InvalidRequestException("The name specified did not match any accounts");
 
         return  accountToReturn;
 
