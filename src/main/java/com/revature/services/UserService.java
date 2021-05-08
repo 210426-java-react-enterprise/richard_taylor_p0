@@ -7,7 +7,6 @@ import com.revature.daos.UserDAO;
 import com.revature.models.Account;
 import com.revature.models.User;
 import com.revature.util.List;
-import com.revature.util.PoorArrayList;
 
 public class UserService {
 
@@ -31,7 +30,7 @@ public class UserService {
         return user.getAge() >= 0 && user.getAge() <= 200;
     }
 
-    public void registerUser(User user) throws InvalidRequestException, ResourcePersistenceException {
+    public User registerUser(User user) throws InvalidRequestException, ResourcePersistenceException {
 
         if (!isValidUser(user)) {
             throw new InvalidRequestException("Invalid user data was provided!");
@@ -45,7 +44,7 @@ public class UserService {
             throw new ResourcePersistenceException("The email provided is already in use.");
         }
 
-        userDAO.saveUserToDataBase(user);
+        return userDAO.save(user);
 
     }
 
