@@ -39,6 +39,7 @@ public class Dashboard extends Screen {
     @Override
     public void render() {
         User loggedInUser = Driver.getAppState().getLoggedInUser();
+        List<Account> accounts;
         System.out.println("Dashboard");
         System.out.println("================");
         System.out.printf("Welcome, %s !\n", loggedInUser.getUserName());
@@ -51,7 +52,7 @@ public class Dashboard extends Screen {
 
         switch (choice) {
             case "1":
-                List<Account> accounts = userService.getAccounts(loggedInUser);
+                accounts = userService.getAccounts(loggedInUser);
                 Account accountOfChoice;
                 if (accounts == null) { //prevent NPE
                     System.out.println("You do not have any registered accounts");
@@ -81,6 +82,10 @@ public class Dashboard extends Screen {
 
                 try {
                     userService.openUserAccount(loggedInUser, accountName, initialBalance);
+                    System.out.println("Account created successfully!");
+                    Driver.getAppState().setActiveAccount(userService.getAccountByName(
+                            userService.getAccounts(loggedInUser), accountName)); //This has to be the most cursed statement I have ever written.
+                    screenRouter.navigate("/account");
                 } catch (InvalidRequestException e) {
                     e.printStackTrace();
                 }

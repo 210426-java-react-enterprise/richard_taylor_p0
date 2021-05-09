@@ -37,6 +37,8 @@ public class AccountScreen extends Screen {
 
         System.out.println(activeAccount.getName());
         System.out.println("=============================");
+        System.out.printf("Current account: %s\n", activeAccount.getName());
+        System.out.printf("Current Balance: $%.2f\n", activeAccount.getBalance());
         System.out.println("Please choose an option");
         System.out.println("1) Deposit funds");
         System.out.println("2) Withdraw funds");

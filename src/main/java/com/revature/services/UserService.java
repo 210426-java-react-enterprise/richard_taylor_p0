@@ -106,8 +106,6 @@ public class UserService {
     public boolean hasAccountName(User user, String name) {
         List<Account> accounts;
         accounts = accountDAO.getAccountsByUserID(user);
-        if (accounts == null || accounts.size() == 0) //prevent potential NPE
-            return true;
 
         for (Account account : accounts) {
             if (account.getName().equals(name))

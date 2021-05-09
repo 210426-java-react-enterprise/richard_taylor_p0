@@ -17,12 +17,15 @@ import com.revature.services.UserService;
  */
 public class AppState {
 
-    private Console console;
-    private ScreenRouter screenRouter;
+    private final Console console;
+    private final ScreenRouter screenRouter;
+    private final UserService userService;
+    private final UserDAO userDAO;
+    private final AccountDAO accountDAO;
     private boolean appRunning;
     private User loggedInUser;
     private Account activeAccount;
-    private UserService userService;
+
 
     /**
      * All persistence, console, screens, and business logic is instantiated here. Therefore, only one of each of these
@@ -33,8 +36,8 @@ public class AppState {
 
         setAppRunning(true);
         console = new Console();
-        UserDAO userDAO = new UserDAO();
-        AccountDAO accountDAO = new AccountDAO();
+        userDAO = new UserDAO();
+        accountDAO = new AccountDAO();
         userService = new UserService(userDAO, accountDAO);
 
 

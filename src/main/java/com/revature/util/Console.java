@@ -10,11 +10,12 @@ import java.util.regex.*;
  * Console
  * <p>
  * This class is used to get input from the user while performing basic type validation.
+ * A scanner object is used for its convenient methods such as hasNextInt(), hasNextDouble(), etc.
  */
 public class Console {
 
     private Scanner scanner;
-    private Pattern emailRegex;  //shamelessly copied from the internet
+    private Pattern emailRegex;
 
     public Console() {
         this.scanner = new Scanner(System.in);
@@ -111,7 +112,7 @@ public class Console {
 
     /**
      * Uses regex to get a valid email from the user. Valid here is used loosely as "a@a" would be a valid email
-     * according to the regex pattern. Can always make the pattern better if need.
+     * according to the regex pattern. Can always make the pattern better if need be.
      *
      * @param prompt The prompt shown to the user
      * @return The validated email
