@@ -7,6 +7,14 @@ import com.revature.models.User;
 import com.revature.screens.*;
 import com.revature.services.UserService;
 
+/**
+ * AppState
+ * <p>
+ * This class encapsulates the state of the entire application. All important objects
+ * live here, including the boolean to tell the driver if the application is running.The application is written in a way
+ * that only one instance of this class will ever be instantiated at one time. This also holds the current logged in user
+ * and their active account.
+ */
 public class AppState {
 
     private Console console;
@@ -16,6 +24,10 @@ public class AppState {
     private Account activeAccount;
     private UserService userService;
 
+    /**
+     * All persistence, console, screens, and business logic is instantiated here. Therefore, only one of each of these
+     * objects can exist at any given time. They are used throughout the application through dependency injection.
+     */
     public AppState() {
         System.out.println("Initializing application");
 
@@ -37,10 +49,6 @@ public class AppState {
 
     }
 
-
-    public Console getConsole() {
-        return console;
-    }
 
     public boolean isAppRunning() {
         return appRunning;

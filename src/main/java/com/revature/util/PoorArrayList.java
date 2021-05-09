@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
-    PoorArrayList
-
-    As the name suggests, a poor man's implementation of a dynamically sized array, the data structure of choice
-    I will be using for this project.
+ * PoorArrayList
+ * <p>
+ * As the name suggests, a poor man's implementation of a dynamically sized array, the data structure of choice
+ * I will be using for this project.
  */
 public class PoorArrayList<E> implements List<E> {
     private Object[] storage;
@@ -18,12 +18,13 @@ public class PoorArrayList<E> implements List<E> {
         this.storage = new Object[DEFAULT_CAPACITY];
     }
 
-    public  PoorArrayList(int capacity) {
+    public PoorArrayList(int capacity) {
         this.storage = new Object[capacity];
     }
 
     /**
      * Adds an element to the back of the array. Doubles the size of the array if the size is full.
+     *
      * @param e The data to be added
      */
     public void add(E e) {
@@ -42,8 +43,9 @@ public class PoorArrayList<E> implements List<E> {
 
     /**
      * Changes the element of the array to the data passed in.
+     *
      * @param index The specified index.
-     * @param e The new data at the index
+     * @param e     The new data at the index
      */
     public void change(int index, E e) { //TODO Decide if I even need this method.
         if (index >= size || index < 0)
@@ -52,7 +54,6 @@ public class PoorArrayList<E> implements List<E> {
     }
 
     /**
-     *
      * @return The size of the array
      */
     public int size() {
@@ -61,6 +62,7 @@ public class PoorArrayList<E> implements List<E> {
 
     /**
      * Gets the element at the specified index.
+     *
      * @param index The index to be retrieved.
      * @return The data in the element.
      */
@@ -75,6 +77,7 @@ public class PoorArrayList<E> implements List<E> {
 
     /**
      * Removes the index of the array.
+     *
      * @param index The index to be removed
      */
     public void removeAt(int index) { //TODO Decide if I even need this method.
@@ -94,7 +97,7 @@ public class PoorArrayList<E> implements List<E> {
 
     //Iterator implementation. Hooray for foreach loops!
     @Override
-    public Iterator<E> iterator () {
+    public Iterator<E> iterator() {
         Iterator<E> iterator = new Iterator<E>() {
             private int cursor = 0;
 

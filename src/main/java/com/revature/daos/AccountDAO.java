@@ -7,14 +7,27 @@ import com.revature.util.List;
 import com.revature.util.PoorArrayList;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 
+/**
+ * AccountDAO
+ * <p>
+ * Class for interacting directly with the database, specifically to do with account-specific queries.
+ * The logic of this application mostly ensures that invalid data doesn't get here.
+ */
 public class AccountDAO {
 
     public AccountDAO() {
 
     }
+
+    /**
+     * Returns a list of all the accounts that belong to a specified user.
+     *
+     * @param user The ID of the user
+     * @return A list of all the accounts belonging to the user
+     */
     public List<Account> getAccountsByUserID(User user) {
+
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             List<Account> accounts = new PoorArrayList<>();
             String query = "select accountid, account_name, balance from project0.users_account\n" +
@@ -28,6 +41,7 @@ public class AccountDAO {
             stmt.setInt(1, user.getUserID());
 
             ResultSet rs = stmt.executeQuery();
+
             while (rs.next()) {
                 Account account = new Account();
                 account.setAccountID(rs.getInt("accountid"));
@@ -36,51 +50,88 @@ public class AccountDAO {
                 accounts.add(account);
             }
             return accounts;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return null;
+
     }
 
+    /**
+     * Takes input from the user, and opens an account with it.
+     *
+     * @param userID         The ID of the logged in user
+     * @param accountName    The account name the user specifies (unique to users)
+     * @param initialBalance The initial deposit (can be zero, if the user wishes)
+     */
     public void openAccount(int userID, String accountName, double initialBalance) {
+
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            int newID = 0;
             String query = "insert into project0.account (account_name, balance)\n" +
                     "values (?, ?);";
-            int newID = 0;
-            PreparedStatement stmt = conn.prepareStatement(query, new String[] {"accountid"});
+            PreparedStatement stmt = conn.prepareStatement(query, new String[]{"accountid"});
+
             stmt.setString(1, accountName);
             stmt.setDouble(2, initialBalance);
+
             int rowsAffected = stmt.executeUpdate();
+
             if (rowsAffected != 0) {
                 ResultSet rs = stmt.getGeneratedKeys();
                 while (rs.next()) {
                     newID = rs.getInt("accountid");
                 }
             }
+
             linkAccount(userID, newID);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Private method only called when openAccount is called, runs a separate query to
+     * link the user to the account using the users_account junction table.
+     * <p>
+     * TODO: figure out how to do this using triggers in the database.
+     *
+     * @param userID    the user ID
+     * @param accountID the account ID
+     */
     private void linkAccount(int userID, int accountID) {
-        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String query = "insert into project0.users_account (accountid, userid)\n" +
                     "values (?, ?);";
             PreparedStatement stmt = conn.prepareStatement(query);
+
             stmt.setInt(1, accountID);
             stmt.setInt(2, userID);
+
             int result = stmt.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Adds money to the account balance.
+     *
+     * @param amount    The amount to deposit
+     * @param accountID the ID of the account
+     */
     public void addBalance(double amount, int accountID) {
-        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String query = "update project0.account set balance = balance + ? where accountid = ?";
 
             PreparedStatement stmt = conn.prepareStatement(query);
+
             stmt.setDouble(1, amount);
             stmt.setInt(2, accountID);
 
@@ -90,8 +141,16 @@ public class AccountDAO {
         }
     }
 
+    /**
+     * Subtracts money from the account balance. No need to check for negative or high values here
+     * as that's done elsewhere before this method is called.
+     *
+     * @param amount    The amount to withdraw or transfer
+     * @param accountID The ID of the account
+     */
     public void subtractBalance(double amount, int accountID) {
-        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String query = "update project0.account set balance = balance - ? where accountid = ?";
 
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -104,7 +163,14 @@ public class AccountDAO {
         }
     }
 
+    /**
+     * Checks to see if the account exists.
+     *
+     * @param accountID The account ID to be checked
+     * @return True if the account exists, false if not.
+     */
     public boolean accountExists(int accountID) {
+
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String query = "select * from project0.account where accountid = ?";
 
@@ -112,12 +178,13 @@ public class AccountDAO {
             stmt.setInt(1, accountID);
 
             ResultSet rs = stmt.executeQuery();
+
             if (rs.next()) {
                 return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false; //return false by default to prevent people from sending money into the void.
+        return false;
     }
 }

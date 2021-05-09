@@ -2,24 +2,36 @@ package com.revature.util;
 
 import com.revature.screens.Screen;
 
+/**
+ * ScreenRouter
+ * <p>
+ * Stores a list of screens, and provides a way of navigating through them.
+ */
 public class ScreenRouter {
 
     private List<Screen> screens = new PoorArrayList<>(); //make my own scuffed data structure
 
+    /**
+     * Takes in a route for the screen, and calls the render method of the specified screen.
+     *
+     * @param route
+     */
     public void navigate(String route) {
-        for(Screen screen: screens) { // iterate through the screen list
-            if(screen.getRoute().equals(route)) { // check each screen to see if it matches the route provided
-                screen.render(); // call the screen's render method
+        for (Screen screen : screens) {
+            if (screen.getRoute().equals(route)) {
+                screen.render();
             }
         }
     }
 
-    /*
-        returns an instance of this class, this allows for this method to be called over and over again
-        allows for statements like router.addScreen(someScreen).addScreen(someOtherScreen)...
+    /**
+     * Adds a screen object to the list of screens. Returns an instance of itself to allow for method chaining.
+     *
+     * @param screen The screen to be added to the list
+     * @return An instance of this class with the screen added
      */
     public ScreenRouter addScreen(Screen screen) {
-        screens.add(screen); //adds a screen to the list
-        return this; //returns the instance with the new screen added
+        screens.add(screen);
+        return this;
     }
 }

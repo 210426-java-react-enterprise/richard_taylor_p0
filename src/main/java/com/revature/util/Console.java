@@ -55,28 +55,15 @@ public class Console {
         return number;
     }
 
-    /**
-     * Prompts the user to provide a number, and keeps re-prompting them until one is provided.
-     *
-     * @param prompt The prompt to be shown to the user.
-     * @return The number the user enters.
-     */
-    public double getDouble(String prompt) {
-        double number = 0.0;
-        boolean valid = false;
-        while (!valid) {
-            System.out.print(prompt);
-            if (scanner.hasNextDouble()) {
-                number = scanner.nextDouble();
-                valid = true;
-            } else {
-                System.err.print("Error! Input must be a number.");
-            }
-            scanner.nextLine();
-        }
-        return number;
-    }
 
+    /**
+     * Prompts the user to enter a decimal value.
+     *
+     * @param prompt The prompt to be shown to the user
+     * @param min    The minimum acceptable value
+     * @param max    The maximum acceptable value
+     * @return The valid number entered by the user
+     */
     public double getDouble(String prompt, double min, double max) {
         double number = 0.0;
         boolean valid = false;
@@ -96,7 +83,10 @@ public class Console {
     }
 
     /**
-     * TODO create documentation, and finish implementation
+     * Prompts the user for a valid Date, adds time on the end of the string for parsing.
+     *
+     * @param prompt The prompt shown to the user
+     * @return The valid date
      */
     public LocalDateTime getDate(String prompt) {
         boolean valid = false;
@@ -119,7 +109,13 @@ public class Console {
         return Date;
     }
 
-    //TODO create javadoc
+    /**
+     * Uses regex to get a valid email from the user. Valid here is used loosely as "a@a" would be a valid email
+     * according to the regex pattern. Can always make the pattern better if need.
+     *
+     * @param prompt The prompt shown to the user
+     * @return The validated email
+     */
     public String getEmail(String prompt) {
         String email = "";
         System.out.print(prompt);

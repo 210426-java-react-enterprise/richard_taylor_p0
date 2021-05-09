@@ -1,13 +1,12 @@
 package com.revature.main;
 
-
 import com.revature.util.AppState;
-import com.revature.util.Console;
 
-import java.time.LocalDateTime;
-
+/**
+ * Main class, runs the application via a while loop that checks the state of the application on every iteration.
+ * When the state is false, falls through to exit the application gracefully.
+ */
 public class Driver {
-
 
     private static AppState appState = new AppState();
 
@@ -19,13 +18,13 @@ public class Driver {
         }
     }
 
+    /**
+     * Used to get the appState object for a few purposes.
+     *
+     * @return the appState object.
+     */
     public static AppState getAppState() {
         return appState;
     }
 
-//    public static void main(String[] args) {
-//        Console console = new Console();
-//        LocalDateTime date = console.getDate(">");
-//        System.out.println(date);
-//    }
 }

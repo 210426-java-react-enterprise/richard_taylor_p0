@@ -1,10 +1,13 @@
 package com.revature.models;
 
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
+/**
+ * User
+ * <p>
+ * POJO to represent Users within the banking application
+ */
 public class User {
 
     private int userID;
@@ -21,8 +24,8 @@ public class User {
 
     }
 
-    public User (int userID, String userName, String password, String email, String firstName, String lastName, LocalDateTime birthday,
-                 int age) {
+    public User(int userID, String userName, String password, String email, String firstName, String lastName, LocalDateTime birthday,
+                int age) {
         this.userID = userID;
         this.setUserName(userName);
         this.setPassword(password);
@@ -103,7 +106,7 @@ public class User {
         return userID;
     }
 
-    public void setUserID(int userID){
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 
@@ -131,5 +134,5 @@ public class User {
         sb.append(", age=").append(age);
         sb.append('}');
         return sb.toString();
-}
+    }
 }

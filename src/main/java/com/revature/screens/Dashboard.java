@@ -13,6 +13,11 @@ import com.revature.util.List;
 import com.revature.util.ScreenRouter;
 
 
+/**
+ * Dashboard
+ *
+ * Allows the user to create a new account or access an existing one.
+ */
 public class Dashboard extends Screen {
 
     private Console console;
@@ -28,6 +33,9 @@ public class Dashboard extends Screen {
         this.userService = userService;
     }
 
+    /**
+     * Presents the user with dialogue and performs various functions based on user input.
+     */
     @Override
     public void render() {
         User loggedInUser = Driver.getAppState().getLoggedInUser();
@@ -45,15 +53,15 @@ public class Dashboard extends Screen {
             case "1":
                 List<Account> accounts = userService.getAccounts(loggedInUser);
                 Account accountOfChoice;
-                if(accounts == null) {
-                    System.out.println("You do not have any registered accounts"); //prevent NPE
+                if (accounts == null) { //prevent NPE
+                    System.out.println("You do not have any registered accounts");
                     break;
                 }
 
-                for (Account account: accounts) {
+                for (Account account : accounts) {
                     System.out.printf("Account ID: %s\n", account.getAccountID());
                     System.out.printf("Name: %s\n", account.getName());
-                    System.out.printf("Balance: %f\n==========================\n", account.getBalance());
+                    System.out.printf("Balance: $%.2f\n==========================\n", account.getBalance());
                 }
 
                 String name = console.getString("Specify the account name: ");
@@ -73,7 +81,7 @@ public class Dashboard extends Screen {
 
                 try {
                     userService.openUserAccount(loggedInUser, accountName, initialBalance);
-                } catch (ResourcePersistenceException e) {
+                } catch (InvalidRequestException e) {
                     e.printStackTrace();
                 }
                 break;

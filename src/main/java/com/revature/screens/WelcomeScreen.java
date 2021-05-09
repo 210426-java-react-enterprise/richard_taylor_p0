@@ -1,12 +1,14 @@
 package com.revature.screens;
 
-import com.revature.daos.UserDAO;
 import com.revature.main.Driver;
 import com.revature.util.Console;
 import com.revature.util.ScreenRouter;
 
-import java.util.Scanner;
-
+/**
+ * WelcomeScreen
+ *
+ * The default home screen. Allows user to choose if they want to log in, or register for a new user account.
+ */
 public class WelcomeScreen extends Screen {
 
     private Console console;
@@ -18,6 +20,9 @@ public class WelcomeScreen extends Screen {
         this.router = router;
     }
 
+    /**
+     * Presents dialog options and allows the user to make a choice.
+     */
     @Override
     public void render() {
         String choice = "";

@@ -8,6 +8,11 @@ import com.revature.util.ScreenRouter;
 
 import java.util.Scanner;
 
+/**
+ * LoginScreen
+ * <p>
+ * Takes user input in the form of a username and password and attempts to log in.
+ */
 public class LoginScreen extends Screen {
 
     private Console console;
@@ -21,13 +26,16 @@ public class LoginScreen extends Screen {
         this.screenRouter = screenRouter;
     }
 
+    /**
+     * Presents the user with dialogue and performs various functions based on user input.
+     */
     @Override
     public void render() {
         System.out.println("Login Screen");
         String username = console.getString("Enter your username: ");
-        String password =  console.getString("Enter your password: ");
+        String password = console.getString("Enter your password: ");
         User user = userDAO.getUserByUserNameAndPassword(username, password);
-        if(user != null) {
+        if (user != null) {
             System.out.println("Login Successful!");
             System.out.println(user.toString());
             Driver.getAppState().setLoggedInUser(user);

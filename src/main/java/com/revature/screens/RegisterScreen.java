@@ -13,12 +13,16 @@ public class RegisterScreen extends Screen {
 
     private Console console;
     private UserService userService;
+
     public RegisterScreen(Console console, UserService userService) {
         super("RegisterScreen", "/register");
         this.console = console;
         this.userService = userService;
     }
 
+    /**
+     * Presents the user with dialogue and performs various functions based on user input.
+     */
     @Override
     public void render() {
         try {

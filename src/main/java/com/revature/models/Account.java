@@ -1,17 +1,17 @@
 package com.revature.models;
 
+/**
+ * Account
+ * <p>
+ * POJO to represent a bank account within the application.
+ */
 public class Account {
-    //private User user;
+
     private int accountID;
     private double balance;
     private String name;
-    //private boolean isActive;
 
-//    public Account(User user) {
-//        this.user = user;
-//    }
-
-    public Account () {
+    public Account() {
 
     }
 
@@ -19,15 +19,15 @@ public class Account {
         return balance;
     }
 
-    public void setBalance (double balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
-    public void addBalance (double amount) {
+    public void addBalance(double amount) {
         balance = getBalance() + amount;
     }
 
-    public void subtractBalance (double amount) {
+    public void subtractBalance(double amount) {
         balance = getBalance() - amount;
     }
 
