@@ -4,6 +4,7 @@ import com.revature.daos.AccountDAO;
 import com.revature.daos.UserDAO;
 import com.revature.main.Driver;
 import com.revature.models.Account;
+import com.revature.util.Cache;
 import com.revature.util.Console;
 import com.revature.util.ScreenRouter;
 
@@ -18,13 +19,15 @@ public class AccountScreen extends Screen {
     private UserDAO userDAO;
     private ScreenRouter screenRouter;
     private AccountDAO accountDAO;
+    private Cache cache;
 
-    public AccountScreen(Console console, UserDAO userDAO, ScreenRouter screenRouter, AccountDAO accountDAO) {
+    public AccountScreen(Console console, UserDAO userDAO, ScreenRouter screenRouter, AccountDAO accountDAO, Cache cache) {
         super("AccountScreen", "/account");
         this.console = console;
         this.userDAO = userDAO;
         this.screenRouter = screenRouter;
         this.accountDAO = accountDAO;
+        this.cache = cache;
     }
 
     /**
@@ -33,7 +36,7 @@ public class AccountScreen extends Screen {
     @Override
     public void render() {
 
-        Account activeAccount = Driver.getAppState().getActiveAccount();
+        Account activeAccount = cache.getActiveAccount();
 
         System.out.println(activeAccount.getName());
         System.out.println("=============================");

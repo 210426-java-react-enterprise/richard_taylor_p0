@@ -23,8 +23,7 @@ public class AppState {
     private final UserDAO userDAO;
     private final AccountDAO accountDAO;
     private boolean appRunning;
-    private User loggedInUser;
-    private Account activeAccount;
+    private Cache cache;
 
 
     /**
@@ -39,14 +38,15 @@ public class AppState {
         userDAO = new UserDAO();
         accountDAO = new AccountDAO();
         userService = new UserService(userDAO, accountDAO);
+        cache = new Cache();
 
 
         screenRouter = new ScreenRouter();
         screenRouter.addScreen(new WelcomeScreen(console, screenRouter))
-                .addScreen(new LoginScreen(console, userDAO, screenRouter))
-                .addScreen(new Dashboard(console, screenRouter, userDAO, userService))
+                .addScreen(new LoginScreen(console, userDAO, screenRouter, cache))
+                .addScreen(new Dashboard(console, screenRouter, userDAO, userService, cache))
                 .addScreen(new RegisterScreen(console, userService))
-                .addScreen(new AccountScreen(console, userDAO, screenRouter, accountDAO));
+                .addScreen(new AccountScreen(console, userDAO, screenRouter, accountDAO, cache));
 
         System.out.println("Application ready");
 
@@ -65,19 +65,4 @@ public class AppState {
         return screenRouter;
     }
 
-    public User getLoggedInUser() {
-        return loggedInUser;
-    }
-
-    public void setLoggedInUser(User loggedInUser) {
-        this.loggedInUser = loggedInUser;
-    }
-
-    public Account getActiveAccount() {
-        return activeAccount;
-    }
-
-    public void setActiveAccount(Account activeAccount) {
-        this.activeAccount = activeAccount;
-    }
 }
