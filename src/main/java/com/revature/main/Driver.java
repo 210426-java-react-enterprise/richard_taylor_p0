@@ -8,7 +8,7 @@ import com.revature.util.AppState;
  */
 public class Driver {
 
-    private static AppState appState = new AppState();
+    private static final AppState appState = new AppState();
 
     public static void main(String[] args) {
         AppState app = getAppState();

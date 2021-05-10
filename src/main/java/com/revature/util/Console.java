@@ -132,4 +132,8 @@ public class Console {
             }
         }
     }
+
+    public void nextLine() {
+        scanner.nextLine();
+    }
 }

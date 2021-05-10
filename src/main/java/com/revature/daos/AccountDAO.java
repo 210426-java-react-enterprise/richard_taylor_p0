@@ -1,12 +1,14 @@
 package com.revature.daos;
 
 import com.revature.models.Account;
+import com.revature.models.Transaction;
 import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
 import com.revature.util.List;
 import com.revature.util.PoorArrayList;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 
 /**
  * AccountDAO
@@ -187,4 +189,88 @@ public class AccountDAO {
         }
         return false;
     }
+
+    public void saveTransaction(String sender, int senderID, String recipient, int recipientID, String transactionType, double amount) {
+
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String query = "insert into project0.transactions (sender_name, sender_account, recipient_name, recipient_account, amount, transaction_type, transaction_date)\n" +
+                    "values (?, ?, ?, ?, ?, ?, ?);";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, sender);
+            stmt.setInt(2, senderID);
+            stmt.setString(3, recipient);
+            stmt.setInt(4, recipientID);
+            stmt.setDouble(5, amount);
+            stmt.setString(6, transactionType);
+            stmt.setObject(7, LocalDateTime.now());
+
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated != 0) {
+                ResultSet rs = stmt.getGeneratedKeys();
+                while (rs.next()) {
+                    Transaction transaction = new Transaction(); //TODO do something here idk
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Transaction> getTransactionsByUsername(String username) {
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            List<Transaction> transactions = new PoorArrayList<>();
+            String query = "select * from project0.transactions\n" +
+                    "where sender_name = ?\n" +
+                    "or recipient_name = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            stmt.setString(2, username);
+
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                Transaction transaction = new Transaction();
+                transaction.setTransactionID(rs.getInt("transactionid"));
+                transaction.setSender(rs.getString("sender_name"));
+                transaction.setSenderAccount(rs.getInt("sender_account"));
+                transaction.setRecipient(rs.getString("recipient_name"));
+                transaction.setTransactionType(rs.getString("transaction_type"));
+                transaction.setAmount(rs.getDouble("amount"));
+                transaction.setDate(rs.getTimestamp("transaction_date").toLocalDateTime());
+                transactions.add(transaction);
+            }
+            return transactions;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getUserNameFromAccount(int accountID) {
+
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String query = "select username\n" +
+                    "from project0.users_account ua\n" +
+                    "join project0.users\n" +
+                    "using(userid)\n" +
+                    "join project0.account\n" +
+                    "using(accountid) where accountid = ?;";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, accountID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
 }
+
+

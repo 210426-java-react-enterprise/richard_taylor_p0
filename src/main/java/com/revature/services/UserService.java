@@ -140,4 +140,25 @@ public class UserService {
         //With my current application logic, this method cannot receive a null user, however it can return a null value.
         return accountDAO.getAccountsByUserID(user);
     }
+
+    public String getUserNameFromAccount(int accountID) throws InvalidRequestException {
+        String name = accountDAO.getUserNameFromAccount(accountID);
+
+        if (name.isEmpty())
+            throw new InvalidRequestException("The account does not exist");
+
+        return name;
+    }
+
+    public void recordTransaction(String sender, int senderID, int recipientID, String transactionType, double amount) {
+        String recipient = "";
+        try {
+            recipient = getUserNameFromAccount(recipientID);
+        } catch (InvalidRequestException e) {
+            e.printStackTrace();
+        }
+
+        accountDAO.saveTransaction(sender, senderID, recipient, recipientID, transactionType,amount);
+    }
+
 }
