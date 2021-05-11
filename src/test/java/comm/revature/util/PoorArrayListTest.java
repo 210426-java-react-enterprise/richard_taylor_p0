@@ -5,7 +5,11 @@ import com.revature.util.PoorArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class PoorArrayListTest {
 
@@ -190,5 +194,58 @@ public class PoorArrayListTest {
         } catch (Exception e) {
             assertTrue(e instanceof IndexOutOfBoundsException);
         }
+    }
+
+    @Test
+    public void test_isEmptyWithEmptyList() {
+        //Arrange
+        boolean result;
+
+        //Act
+        result = sut.isEmpty();
+
+        //Assert
+        assertTrue(result);
+    }
+
+    @Test
+    public void test_isEmptyWithNonEmptyList() {
+        //Arrange
+        boolean result;
+        sut.add(1);
+
+        //Act
+        result = sut.isEmpty();
+
+        //Assert
+        assertFalse(result);
+    }
+
+    @Test
+    public void test_increaseCapacity() {
+        for(int i = 0; i < 15; i++) {
+            sut.add(i);
+        }
+
+        assertEquals(15, sut.size());
+
+    }
+
+    @Test
+    public void test_Iterator() {
+
+        sut.add(1);
+        sut.add(2);
+        sut.add(3);
+
+        Iterator<Integer> i = sut.iterator();
+
+        assertNotNull(i);
+        assertTrue(i.hasNext());
+        assertEquals(1, (int) i.next());
+        assertEquals(2, (int) i.next());
+        assertEquals(3, (int) i.next());
+
+
     }
 }
