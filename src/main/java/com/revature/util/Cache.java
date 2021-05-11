@@ -1,10 +1,13 @@
 package com.revature.util;
 
-import com.revature.models.Account;
-import com.revature.models.Transaction;
-import com.revature.models.User;
+import com.revature.models.*;
 
-public class Cache { //Idea shamelessly plundered from Wezley
+/**
+ * Cache
+ *
+ * This Class is used to store a cache of information to prevent needless calls to the database.
+ */
+public class Cache { //Idea shamelessly stolen from Wezley
 
     private User loggedInUser;
     private Account activeAccount;

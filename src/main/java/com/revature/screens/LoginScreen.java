@@ -3,6 +3,7 @@ package com.revature.screens;
 import com.revature.daos.UserDAO;
 import com.revature.main.Driver;
 import com.revature.models.User;
+import com.revature.services.UserService;
 import com.revature.util.Cache;
 import com.revature.util.Console;
 import com.revature.util.ScreenRouter;
@@ -20,13 +21,15 @@ public class LoginScreen extends Screen {
     private UserDAO userDAO;
     private ScreenRouter screenRouter;
     private Cache cache;
+    private UserService userService;
 
-    public LoginScreen(Console console, UserDAO userDAO, ScreenRouter screenRouter, Cache cache) {
+    public LoginScreen(Console console, UserDAO userDAO, ScreenRouter screenRouter, Cache cache, UserService userService) {
         super("LoginScreen", "/login");
         this.console = console;
         this.userDAO = userDAO;
         this.screenRouter = screenRouter;
         this.cache = cache;
+        this.userService = userService;
     }
 
     /**
@@ -42,6 +45,7 @@ public class LoginScreen extends Screen {
             System.out.println("Login Successful!");
             System.out.println(user);
             cache.setLoggedInUser(user);
+            cache.setTransactions(userService.getTransactions(user)); //load transactions into memory so DB isn't queried every time we want transactions.
             screenRouter.navigate("/dashboard");
         } else {
             System.out.println("Login Failed :(");

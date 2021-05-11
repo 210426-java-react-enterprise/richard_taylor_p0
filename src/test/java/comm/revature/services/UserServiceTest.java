@@ -5,6 +5,7 @@ import com.revature.Exceptions.ResourcePersistenceException;
 import com.revature.daos.AccountDAO;
 import com.revature.daos.UserDAO;
 import com.revature.models.Account;
+import com.revature.models.Transaction;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import com.revature.util.List;
@@ -14,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -146,5 +148,45 @@ public class UserServiceTest {
         //Assert
         assertEquals(expected.getName(), actual.getName());
     }
+
+    @Test
+    public void test_recordTransactionWithValidData() {
+        //Arrange
+        Transaction before = null;
+        Transaction transaction = new Transaction(1, "name", 1, "name", 1, 1.0, LocalDateTime.now(), "deposit");
+        String sender = "sender";
+        int senderID = 1;
+        int recipientID = 1;
+        double amount = 1.0;
+        when(mockAccountDao.saveTransaction(anyString(), anyInt(), anyString(), anyInt(), anyString(), anyDouble())).thenReturn(Optional.of(transaction));
+        when(mockAccountDao.getUserNameFromAccount(anyInt())).thenReturn("recipient");
+
+        //Act
+        try {
+            before = sut.recordTransaction(sender, senderID, recipientID, "deposit", amount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        assertNotNull(before);
+    }
+
+    @Test
+    public void test_recordTransactionWithInvalidData() {
+
+        String sender = "sender";
+        int senderID = 1;
+        String recipient = "recipient";
+        int recipientID = 1;
+        double amount = 1.0;
+        when(mockAccountDao.saveTransaction(anyString(), anyInt(), anyString(), anyInt(), anyString(), anyDouble())).thenReturn(null);
+        when(mockAccountDao.getUserNameFromAccount(anyInt())).thenReturn("recipient");
+
+        try {
+            sut.recordTransaction(null, 0, 0, null, 0);
+        } catch (Exception e) {
+            assertTrue(e instanceof ResourcePersistenceException);
+        }
+    }
+
 }
 
