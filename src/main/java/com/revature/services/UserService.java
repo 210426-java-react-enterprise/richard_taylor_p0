@@ -77,7 +77,7 @@ public class UserService {
      *
      * @param accounts The list of accounts to be passed in
      * @param name     The name to be searched for
-     * @return The account with the specified, null otherwise (potential NPE must be handled elsewhere)
+     * @return The account with the specified
      * @throws InvalidRequestException if the name specified does not match any accounts
      */
     public Account getAccountByName(List<Account> accounts, String name) throws InvalidRequestException {
@@ -107,9 +107,11 @@ public class UserService {
         List<Account> accounts;
         accounts = accountDAO.getAccountsByUserID(user);
 
-        for (Account account : accounts) {
-            if (account.getName().equals(name))
-                return true;
+        if(!(accounts == null)) {
+            for (Account account : accounts) {
+                if (account.getName().equals(name))
+                    return true;
+            }
         }
         return false;
     }
@@ -137,12 +139,12 @@ public class UserService {
      * @return The list of accounts belonging to the user, null if there are none (must be handled)
      */
     public List<Account> getAccounts(User user) {
-        //With my current application logic, this method cannot receive a null user, however it can return a null value.
         return accountDAO.getAccountsByUserID(user);
     }
 
     public String getUserNameFromAccount(int accountID) throws InvalidRequestException {
-        String name = accountDAO.getUserNameFromAccount(accountID);
+        String name = "";
+        name = accountDAO.getUserNameFromAccount(accountID);
 
         if (name.isEmpty())
             throw new InvalidRequestException("The account does not exist");
@@ -150,15 +152,17 @@ public class UserService {
         return name;
     }
 
-    public void recordTransaction(String sender, int senderID, int recipientID, String transactionType, double amount) {
+    public boolean recordTransaction(String sender, int senderID, int recipientID, String transactionType, double amount) {
         String recipient = "";
         try {
             recipient = getUserNameFromAccount(recipientID);
         } catch (InvalidRequestException e) {
             e.printStackTrace();
+            return false;
         }
 
         accountDAO.saveTransaction(sender, senderID, recipient, recipientID, transactionType,amount);
+        return true;
     }
 
 }

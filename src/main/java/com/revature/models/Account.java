@@ -15,6 +15,12 @@ public class Account {
 
     }
 
+    public Account(int accountID, double balance, String name) {
+        this.accountID = accountID;
+        this.balance = balance;
+        this.name = name;
+    }
+
     public double getBalance() {
         return balance;
     }

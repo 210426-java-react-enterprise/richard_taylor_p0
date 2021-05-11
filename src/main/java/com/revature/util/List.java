@@ -3,7 +3,7 @@ package com.revature.util;
 /**
  * List
  * <p>
- * The interface for the data structure used for this project, as we are not allowed to use java.util.Collections at all.
+ * The interface for the data structure used for this project, as we are not allowed to use the data structures from java.util.Collections at all.
  *
  * @param <E> The object type the list will hold
  */
@@ -30,6 +30,13 @@ public interface List<E> extends Iterable<E> {
      * @return The number of elements in the list as an integer
      */
     int size();
+
+    /**
+     * Reports if the list is empty.
+     *
+     * @return true if the list is empty, false if not
+     */
+    boolean isEmpty();
 
     /**
      * Removes an element from the specified index

@@ -20,15 +20,13 @@ public class Dashboard extends Screen {
 
     private Console console;
     private ScreenRouter screenRouter;
-    private UserDAO userDAO;
     private UserService userService;
     private Cache cache;
 
-    public Dashboard(Console console, ScreenRouter screenRouter, UserDAO userDAO, UserService userService, Cache cache) {
+    public Dashboard(Console console, ScreenRouter screenRouter, UserService userService, Cache cache) {
         super("Dashboard", "/dashboard");
         this.console = console;
         this.screenRouter = screenRouter;
-        this.userDAO = userDAO;
         this.userService = userService;
         this.cache = cache;
     }
@@ -54,7 +52,7 @@ public class Dashboard extends Screen {
             case "1":
                 accounts = userService.getAccounts(loggedInUser);
                 Account accountOfChoice;
-                if (accounts == null) { //prevent NPE
+                if (accounts.isEmpty()) {
                     System.out.println("You do not have any registered accounts");
                     break;
                 }
@@ -91,6 +89,7 @@ public class Dashboard extends Screen {
                 }
                 break;
             case "3":
+                screenRouter.navigate("/welcome");
                 break;
             default:
                 System.out.println("The choice you entered was invalid");

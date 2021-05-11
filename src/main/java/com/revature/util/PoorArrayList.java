@@ -42,6 +42,15 @@ public class PoorArrayList<E> implements List<E> {
     }
 
     /**
+     * Checks the size of the backing array.
+     *
+     * @return true if it is empty, false if not
+     */
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    /**
      * Changes the element of the array to the data passed in.
      *
      * @param index The specified index.

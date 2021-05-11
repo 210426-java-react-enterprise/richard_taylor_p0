@@ -30,8 +30,10 @@ public class AccountDAO {
      */
     public List<Account> getAccountsByUserID(User user) {
 
+
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             List<Account> accounts = new PoorArrayList<>();
+
             String query = "select accountid, account_name, balance from project0.users_account\n" +
                     "join project0.users\n" +
                     "using (userid)\n" +
@@ -56,9 +58,7 @@ public class AccountDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return null;
-
+        return new PoorArrayList<>();
     }
 
     /**
@@ -238,6 +238,7 @@ public class AccountDAO {
                 transaction.setSender(rs.getString("sender_name"));
                 transaction.setSenderAccount(rs.getInt("sender_account"));
                 transaction.setRecipient(rs.getString("recipient_name"));
+                transaction.setRecipientAccount(rs.getInt("recipient_account"));
                 transaction.setTransactionType(rs.getString("transaction_type"));
                 transaction.setAmount(rs.getDouble("amount"));
                 transaction.setDate(rs.getTimestamp("transaction_date").toLocalDateTime());
