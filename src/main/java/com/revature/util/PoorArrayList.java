@@ -2,6 +2,7 @@ package com.revature.util;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * PoorArrayList
@@ -118,6 +119,10 @@ public class PoorArrayList<E> implements List<E> {
             @Override
             @SuppressWarnings("unchecked")
             public E next() {
+
+                if(!this.hasNext())
+                    throw new NoSuchElementException();
+
                 return (E) storage[cursor++];
             }
         };
