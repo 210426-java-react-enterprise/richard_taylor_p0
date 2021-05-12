@@ -173,11 +173,6 @@ public class UserServiceTest {
     @Test
     public void test_recordTransactionWithInvalidData() {
 
-        String sender = "sender";
-        int senderID = 1;
-        String recipient = "recipient";
-        int recipientID = 1;
-        double amount = 1.0;
         when(mockAccountDao.saveTransaction(anyString(), anyInt(), anyString(), anyInt(), anyString(), anyDouble())).thenReturn(null);
         when(mockAccountDao.getUserNameFromAccount(anyInt())).thenReturn("recipient");
 
@@ -226,6 +221,41 @@ public class UserServiceTest {
         assertFalse(found);
     }
 
+    @Test
+    public void test_openUserAccountWithValidData() {
+        User validUser = new User(0, "un", "pw", "something@mail.com",
+                "fn", "ln", LocalDateTime.now(), 23);
+        String name = "name2";
+        double initialBalance = 1.0;
+        List<Account> accounts = new PoorArrayList<>();
+        accounts.add(new Account(1, 1.0, "name")); //the input string and account name are different
+        when(mockAccountDao.getAccountsByUserID(validUser)).thenReturn(accounts);
+
+        try {
+            sut.openUserAccount(validUser, name, initialBalance);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        verify(mockAccountDao, times(1)).openAccount(anyInt(), anyString(), anyDouble());
+    }
+
+    @Test
+    public void test_openUserAccountWithInvalidData() {
+        User validUser = new User(0, "un", "pw", "something@mail.com",
+                "fn", "ln", LocalDateTime.now(), 23);
+        String name = "name";
+        double initialBalance = 1.0;
+        List<Account> accounts = new PoorArrayList<>();
+        accounts.add(new Account(1, 1.0, "name")); //the input string and account name are the same
+        when(mockAccountDao.getAccountsByUserID(validUser)).thenReturn(accounts);
+
+        try {
+            sut.openUserAccount(validUser, name, initialBalance);
+        } catch(Exception e) {
+            assertTrue(e instanceof InvalidRequestException);
+        }
+        verify(mockAccountDao, times(0)).openAccount(anyInt(), anyString(), anyDouble());
+    }
 
 }
 

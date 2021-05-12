@@ -199,7 +199,7 @@ public class AccountDAO {
             String query = "insert into project0.transactions (sender_name, sender_account, recipient_name, recipient_account, amount, transaction_type, transaction_date)\n" +
                     "values (?, ?, ?, ?, ?, ?, ?);";
             String[] columns = new String[] {"transactionid", "sender_name", "sender_account", "recipient_name", "recipient_account",
-                                                "transaction_type", "amount", "transaction_date"};
+                    "transaction_type", "amount", "transaction_date"};
 
             PreparedStatement stmt = conn.prepareStatement(query, columns);
             stmt.setString(1, sender);
