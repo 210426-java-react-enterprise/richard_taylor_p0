@@ -70,7 +70,7 @@ public class AccountScreen extends Screen {
                     System.err.println(e.getMessage());
                 }
                 System.out.printf("Your new balance is: $%.2f\n", activeAccount.getBalance() + amount);
-                screenRouter.navigate("/dashboard");
+                screenRouter.navigate("/account");
                 break;
             case "2":
                 amount = console.getDouble("Enter an amount: ", 0, activeAccount.getBalance());
@@ -82,7 +82,7 @@ public class AccountScreen extends Screen {
                     System.err.println(e.getMessage());
                 }
                 System.out.printf("Your new balance is: $%.2f\n", activeAccount.getBalance() - amount);
-                screenRouter.navigate("/dashboard");
+                screenRouter.navigate("/account");
                 break;
             case "3":
                 amount = console.getDouble("Enter an amount: ", 0, activeAccount.getBalance());
@@ -107,7 +107,7 @@ public class AccountScreen extends Screen {
 
                 if(transactions == null) {
                     System.out.println("This account has no transaction history.");
-                    this.render(); //Again, gross. I know.
+                    screenRouter.navigate("/account");
                 } else {
                     for(Transaction trans: transactions) {
                         System.out.printf("Sender: %s\n", trans.getSender());
@@ -120,7 +120,7 @@ public class AccountScreen extends Screen {
                         System.out.println("===============================");
                     }
                 }
-                this.render();
+                screenRouter.navigate("/account");
                 break;
             case "5":
                 screenRouter.navigate("/dashboard");
