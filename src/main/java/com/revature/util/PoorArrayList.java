@@ -104,6 +104,11 @@ public class PoorArrayList<E> implements List<E> {
         size--;
     }
 
+    public E[] toArray() {
+        return (E[]) storage;
+    }
+
+
     //Iterator implementation. Hooray for foreach loops!
     @Override
     public Iterator<E> iterator() {

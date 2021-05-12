@@ -9,7 +9,6 @@ import org.junit.Test;
 import java.util.Iterator;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class PoorArrayListTest {
 
@@ -245,7 +244,7 @@ public class PoorArrayListTest {
         assertEquals(1, (int) i.next());
         assertEquals(2, (int) i.next());
         assertEquals(3, (int) i.next());
-
-
+        assertFalse(i.hasNext());
     }
+
 }

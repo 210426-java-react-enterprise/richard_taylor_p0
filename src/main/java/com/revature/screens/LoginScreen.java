@@ -45,7 +45,7 @@ public class LoginScreen extends Screen {
             System.out.println("Login Successful!");
             System.out.println(user);
             cache.setLoggedInUser(user);
-            cache.setTransactions(userService.getTransactions(user)); //load transactions into memory so DB isn't queried every time we want transactions.
+            cache.setTransactions(userService.getTransactions(user)); //load transactions into memory so DB isn't queried every time user requests transactions.
             screenRouter.navigate("/dashboard");
         } else {
             System.out.println("Login Failed :(");

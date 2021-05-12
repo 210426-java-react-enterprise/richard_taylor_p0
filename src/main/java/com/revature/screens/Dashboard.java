@@ -70,12 +70,15 @@ public class Dashboard extends Screen {
                     cache.setActiveAccount(accountOfChoice);
                 } catch (InvalidRequestException e) {
                     System.out.println(e.getMessage());
-                    this.render(); //gross, but the easiest way to handle this without making the user log in again.
+                    screenRouter.navigate("/dashboard");
+                    break;
                 }
                 screenRouter.navigate("/account");
                 break;
             case "2":
-                String accountName = console.getString("Enter a Name: ");
+                String accountName = "";
+                //keep re-prompting user for a non-empty string.
+                while (accountName.trim().isEmpty()) accountName = console.getString("Please empty a non-empty account name: ");
                 double initialBalance = console.getDouble("Enter an initial deposit: ", 0, Double.MAX_VALUE);
 
                 try {

@@ -188,5 +188,44 @@ public class UserServiceTest {
         }
     }
 
+    @Test
+    public void test_hasAccountNameWithFoundAccount() {
+        //Arrange
+        List<Account> accounts = new PoorArrayList<>();
+        accounts.add(new Account(1, 1.0, "name"));
+        accounts.add(new Account(2, 1.0, "second_name"));
+        accounts.add(new Account(3, 1.0, "third_name"));
+
+        when(mockAccountDao.getAccountsByUserID(any())).thenReturn(accounts);
+
+        boolean found = false;
+
+        //Act
+        found = sut.hasAccountName(new User(), "name");
+
+        //Assert
+        assertTrue(found);
+    }
+
+    @Test
+    public void test_hasAccountNameWithNotFoundAccount() {
+        //Arrange
+        List<Account> accounts = new PoorArrayList<>();
+        accounts.add(new Account(1, 1.0, "name"));
+        accounts.add(new Account(2, 1.0, "second_name"));
+        accounts.add(new Account(3, 1.0, "third_name"));
+
+        when(mockAccountDao.getAccountsByUserID(any())).thenReturn(accounts);
+
+        boolean found;
+
+        //Act
+        found = sut.hasAccountName(new User(), "fourth_name");
+
+        //Assert
+        assertFalse(found);
+    }
+
+
 }
 
