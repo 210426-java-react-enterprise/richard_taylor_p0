@@ -1,6 +1,5 @@
 package com.revature.util;
 
-import java.util.Collection;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -13,7 +12,7 @@ import java.util.stream.StreamSupport;
  */
 public interface List<E> extends Iterable<E> {
 
-    default Stream<E> stream() {
+    default Stream<E> stream() { //we streamin' now bois
         return StreamSupport.stream(spliterator(), false);
     }
 

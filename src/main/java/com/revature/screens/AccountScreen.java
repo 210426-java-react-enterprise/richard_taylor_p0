@@ -66,10 +66,11 @@ public class AccountScreen extends Screen {
                 try {
                     transaction = userService.recordTransaction(loggedInUser.getUserName(), activeAccount.getAccountID(), activeAccount.getAccountID(), "deposit", amount);
                     cache.getTransactions().add(transaction);
+                    activeAccount.setBalance(activeAccount.getBalance() + amount); //update cached account to reflect new balance
                 } catch (ResourcePersistenceException e) {
                     System.err.println(e.getMessage());
                 }
-                System.out.printf("Your new balance is: $%.2f\n", activeAccount.getBalance() + amount);
+                System.out.printf("Your new balance is: $%.2f\n", activeAccount.getBalance());
                 screenRouter.navigate("/account");
                 break;
             case "2":
@@ -78,10 +79,11 @@ public class AccountScreen extends Screen {
                 try {
                     transaction = userService.recordTransaction(loggedInUser.getUserName(), activeAccount.getAccountID(), activeAccount.getAccountID(), "withdrawal", amount);
                     cache.getTransactions().add(transaction);
+                    activeAccount.setBalance(activeAccount.getBalance() - amount);
                 } catch (ResourcePersistenceException e) {
                     System.err.println(e.getMessage());
                 }
-                System.out.printf("Your new balance is: $%.2f\n", activeAccount.getBalance() - amount);
+                System.out.printf("Your new balance is: $%.2f\n", activeAccount.getBalance());
                 screenRouter.navigate("/account");
                 break;
             case "3":
@@ -89,9 +91,10 @@ public class AccountScreen extends Screen {
                 int recipient = console.getInt("Enter the account id of the recipient: ");
 
                 if (accountDAO.accountExists(recipient)) {
-                    accountDAO.subtractBalance(amount, activeAccount.getAccountID());
-                    accountDAO.addBalance(amount, recipient);
                     try {
+                        accountDAO.subtractBalance(amount, activeAccount.getAccountID());
+                        accountDAO.addBalance(amount, recipient);
+                        activeAccount.setBalance(activeAccount.getBalance() - amount);
                         transaction = userService.recordTransaction(loggedInUser.getUserName(), activeAccount.getAccountID(), recipient, "transfer", amount);
                         cache.getTransactions().add(transaction);
                     } catch (ResourcePersistenceException e) {
@@ -100,6 +103,7 @@ public class AccountScreen extends Screen {
                     System.out.println("Transfer successful!");
                 } else {
                     System.out.println("Transfer failed. The account specified does not exist.");
+                    screenRouter.navigate("/account");
                 }
                 break;
             case "4":

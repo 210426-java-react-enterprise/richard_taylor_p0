@@ -40,7 +40,7 @@ public class Dashboard extends Screen {
         List<Account> accounts;
         System.out.println("Dashboard");
         System.out.println("================");
-        System.out.printf("Welcome, %s !\n", loggedInUser.getUserName());
+        System.out.printf("Welcome, %s!\n", loggedInUser.getFirstName());
         System.out.println("What would you like to do today?");
         System.out.println("1) Access an account");
         System.out.println("2) Open a new account");
@@ -78,7 +78,7 @@ public class Dashboard extends Screen {
             case "2":
                 String accountName = "";
                 //keep re-prompting user for a non-empty string.
-                while (accountName.trim().isEmpty()) accountName = console.getString("Please empty a non-empty account name: ");
+                while (accountName.trim().isEmpty()) accountName = console.getString("Please enter a non-empty account name: ");
                 double initialBalance = console.getDouble("Enter an initial deposit: ", 0, Double.MAX_VALUE);
 
                 try {

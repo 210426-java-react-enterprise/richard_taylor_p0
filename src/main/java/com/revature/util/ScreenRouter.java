@@ -19,15 +19,10 @@ public class ScreenRouter {
      * @param route the route to be passed in
      */
     public void navigate(String route) {
-//        for (Screen screen : screens) {
-//            if (screen.getRoute().equals(route)) {
-//                screen.render();
-//            }
-//        }
         currentScreen = screens.stream()
-                               .filter(screen -> screen.getRoute().equals(route))
-                               .findFirst()
-                               .orElseThrow(InvalidRouteException::new);
+                .filter(screen -> screen.getRoute().equals(route))
+                .findFirst()
+                .orElseThrow(InvalidRouteException::new);
     }
 
     /**
