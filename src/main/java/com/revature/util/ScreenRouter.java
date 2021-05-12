@@ -1,5 +1,6 @@
 package com.revature.util;
 
+import com.revature.Exceptions.InvalidRouteException;
 import com.revature.screens.Screen;
 
 /**
@@ -9,19 +10,24 @@ import com.revature.screens.Screen;
  */
 public class ScreenRouter {
 
-    private List<Screen> screens = new PoorArrayList<>(); //make my own scuffed data structure
+    private List<Screen> screens = new PoorArrayList<>();
+    private Screen currentScreen;
 
     /**
      * Takes in a route for the screen, and calls the render method of the specified screen.
      *
-     * @param route
+     * @param route the route to be passed in
      */
     public void navigate(String route) {
-        for (Screen screen : screens) {
-            if (screen.getRoute().equals(route)) {
-                screen.render();
-            }
-        }
+//        for (Screen screen : screens) {
+//            if (screen.getRoute().equals(route)) {
+//                screen.render();
+//            }
+//        }
+        currentScreen = screens.stream()
+                               .filter(screen -> screen.getRoute().equals(route))
+                               .findFirst()
+                               .orElseThrow(InvalidRouteException::new);
     }
 
     /**
@@ -33,5 +39,9 @@ public class ScreenRouter {
     public ScreenRouter addScreen(Screen screen) {
         screens.add(screen);
         return this;
+    }
+
+    public Screen getCurrentScreen() {
+        return currentScreen;
     }
 }
