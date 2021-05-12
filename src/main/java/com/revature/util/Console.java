@@ -111,7 +111,7 @@ public class Console {
     }
 
     /**
-     * Uses regex to get a valid email from the user. Valid here is used loosely as "a@a" would be a valid email
+     * Uses regex to get a valid email from the user. The term "valid" here is used loosely as "a@a" would be a valid email
      * according to the regex pattern. Can always make the pattern better if need be.
      *
      * @param prompt The prompt shown to the user

@@ -1,5 +1,6 @@
 package com.revature.screens;
 
+import com.revature.Exceptions.ResourcePersistenceException;
 import com.revature.daos.AccountDAO;
 import com.revature.daos.UserDAO;
 import com.revature.models.Account;
@@ -43,6 +44,7 @@ public class AccountScreen extends Screen {
 
         Account activeAccount = cache.getActiveAccount();
         User loggedInUser = cache.getLoggedInUser();
+        Transaction transaction;
         System.out.println(activeAccount.getName());
         System.out.println("=============================");
         System.out.printf("Current account: %s\n", activeAccount.getName());
@@ -61,14 +63,24 @@ public class AccountScreen extends Screen {
             case "1":
                 amount = console.getDouble("Enter an amount: ", 0, Double.MAX_VALUE);
                 accountDAO.addBalance(amount, activeAccount.getAccountID());
-                userService.recordTransaction(loggedInUser.getUserName(), activeAccount.getAccountID(), activeAccount.getAccountID(), "deposit", amount);
+                try {
+                    transaction = userService.recordTransaction(loggedInUser.getUserName(), activeAccount.getAccountID(), activeAccount.getAccountID(), "deposit", amount);
+                    cache.getTransactions().add(transaction);
+                } catch (ResourcePersistenceException e) {
+                    System.err.println(e.getMessage());
+                }
                 System.out.printf("Your new balance is: $%.2f\n", activeAccount.getBalance() + amount);
                 screenRouter.navigate("/dashboard");
                 break;
             case "2":
                 amount = console.getDouble("Enter an amount: ", 0, activeAccount.getBalance());
                 accountDAO.subtractBalance(amount, activeAccount.getAccountID());
-                userService.recordTransaction(loggedInUser.getUserName(), activeAccount.getAccountID(), activeAccount.getAccountID(), "withdrawal", amount);
+                try {
+                    transaction = userService.recordTransaction(loggedInUser.getUserName(), activeAccount.getAccountID(), activeAccount.getAccountID(), "withdrawal", amount);
+                    cache.getTransactions().add(transaction);
+                } catch (ResourcePersistenceException e) {
+                    System.err.println(e.getMessage());
+                }
                 System.out.printf("Your new balance is: $%.2f\n", activeAccount.getBalance() - amount);
                 screenRouter.navigate("/dashboard");
                 break;
@@ -79,26 +91,32 @@ public class AccountScreen extends Screen {
                 if (accountDAO.accountExists(recipient)) {
                     accountDAO.subtractBalance(amount, activeAccount.getAccountID());
                     accountDAO.addBalance(amount, recipient);
-                    userService.recordTransaction(loggedInUser.getUserName(), activeAccount.getAccountID(), recipient, "transfer", amount);
+                    try {
+                        transaction = userService.recordTransaction(loggedInUser.getUserName(), activeAccount.getAccountID(), recipient, "transfer", amount);
+                        cache.getTransactions().add(transaction);
+                    } catch (ResourcePersistenceException e) {
+                        System.err.println(e.getMessage());
+                    }
                     System.out.println("Transfer successful!");
                 } else {
                     System.out.println("Transfer failed. The account specified does not exist.");
                 }
                 break;
             case "4":
-                List<Transaction> transactions = accountDAO.getTransactionsByUsername(loggedInUser.getUserName());
+                List<Transaction> transactions = cache.getTransactions();
 
                 if(transactions == null) {
                     System.out.println("This account has no transaction history.");
                     this.render(); //Again, gross. I know.
                 } else {
-                    for(Transaction transaction: transactions) {
-                        System.out.printf("Sender: %s\n", transaction.getSender());
-                        System.out.printf("Sender ID: %d\n", transaction.getSenderAccount());
-                        System.out.printf("Recipient: %s\n", transaction.getRecipient());
-                        System.out.printf("Recipient ID: %d\n", transaction.getRecipientAccount());
-                        System.out.printf("Amount: $%.2f\n", transaction.getAmount());
-                        System.out.println("Date: " + transaction.getDate());
+                    for(Transaction trans: transactions) {
+                        System.out.printf("Sender: %s\n", trans.getSender());
+                        System.out.printf("Sender ID: %d\n", trans.getSenderAccount());
+                        System.out.printf("Recipient: %s\n", trans.getRecipient());
+                        System.out.printf("Recipient ID: %d\n", trans.getRecipientAccount());
+                        System.out.printf("Type: %s\n: ", trans.getTransactionType());
+                        System.out.printf("Amount: $%.2f\n", trans.getAmount());
+                        System.out.println("Date: " + trans.getDate());
                         System.out.println("===============================");
                     }
                 }
@@ -106,7 +124,7 @@ public class AccountScreen extends Screen {
                 break;
             case "5":
                 screenRouter.navigate("/dashboard");
-
+                break;
             default:
                 System.out.println("Your choice was invalid");
         }

@@ -92,4 +92,19 @@ public class Transaction {
     public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Transaction{");
+        sb.append("transactionID=").append(transactionID);
+        sb.append(", sender='").append(sender).append('\'');
+        sb.append(", senderAccount=").append(senderAccount);
+        sb.append(", recipient='").append(recipient).append('\'');
+        sb.append(", recipientAccount=").append(recipientAccount);
+        sb.append(", transactionType='").append(transactionType).append('\'');
+        sb.append(", amount=").append(amount);
+        sb.append(", date=").append(date);
+        sb.append('}');
+        return sb.toString();
+    }
 }

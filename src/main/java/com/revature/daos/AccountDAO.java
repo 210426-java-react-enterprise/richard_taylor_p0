@@ -9,6 +9,7 @@ import com.revature.util.PoorArrayList;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * AccountDAO
@@ -190,13 +191,17 @@ public class AccountDAO {
         return false;
     }
 
-    public void saveTransaction(String sender, int senderID, String recipient, int recipientID, String transactionType, double amount) {
+    public Optional<Transaction> saveTransaction(String sender, int senderID, String recipient, int recipientID, String transactionType, double amount) {
+
+        Optional<Transaction> _transaction = Optional.empty();
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String query = "insert into project0.transactions (sender_name, sender_account, recipient_name, recipient_account, amount, transaction_type, transaction_date)\n" +
                     "values (?, ?, ?, ?, ?, ?, ?);";
+            String[] columns = new String[] {"transactionid", "sender_name", "sender_account", "recipient_name", "recipient_account",
+                    "transaction_type", "amount", "transaction_date"};
 
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query, columns);
             stmt.setString(1, sender);
             stmt.setInt(2, senderID);
             stmt.setString(3, recipient);
@@ -210,13 +215,23 @@ public class AccountDAO {
             if (rowsUpdated != 0) {
                 ResultSet rs = stmt.getGeneratedKeys();
                 while (rs.next()) {
-                    Transaction transaction = new Transaction(); //TODO do something here idk
+                    Transaction transaction = new Transaction();
+                    transaction.setTransactionID(rs.getInt("transactionid"));
+                    transaction.setSender(rs.getString("sender_name"));
+                    transaction.setSenderAccount(rs.getInt("sender_account"));
+                    transaction.setRecipient(rs.getString("recipient_name"));
+                    transaction.setRecipientAccount(rs.getInt("recipient_account"));
+                    transaction.setTransactionType(rs.getString("transaction_type"));
+                    transaction.setAmount(rs.getDouble("amount"));
+                    transaction.setDate(rs.getTimestamp("transaction_Date").toLocalDateTime());
+                    _transaction = Optional.of(transaction);
                 }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return _transaction;
     }
 
     public List<Transaction> getTransactionsByUsername(String username) {

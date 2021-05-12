@@ -11,4 +11,8 @@ public class ResourcePersistenceException extends Exception {
         super(message);
     }
 
+    public ResourcePersistenceException() {
+
+    }
+
 }

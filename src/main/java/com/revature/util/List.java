@@ -1,5 +1,9 @@
 package com.revature.util;
 
+import java.util.Collection;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 /**
  * List
  * <p>
@@ -8,6 +12,10 @@ package com.revature.util;
  * @param <E> The object type the list will hold
  */
 public interface List<E> extends Iterable<E> {
+
+    default Stream<E> stream() {
+        return StreamSupport.stream(spliterator(), false);
+    }
 
     /**
      * Adds an object to the back of the list.

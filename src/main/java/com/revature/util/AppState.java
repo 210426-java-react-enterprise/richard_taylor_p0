@@ -43,7 +43,7 @@ public class AppState {
 
         screenRouter = new ScreenRouter();
         screenRouter.addScreen(new WelcomeScreen(console, screenRouter))
-                .addScreen(new LoginScreen(console, userDAO, screenRouter, cache))
+                .addScreen(new LoginScreen(console, userDAO, screenRouter, cache, userService))
                 .addScreen(new Dashboard(console, screenRouter, userService, cache))
                 .addScreen(new RegisterScreen(console, userService))
                 .addScreen(new AccountScreen(console, userDAO, screenRouter, accountDAO, cache, userService));

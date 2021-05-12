@@ -5,6 +5,7 @@ import com.revature.Exceptions.ResourcePersistenceException;
 import com.revature.daos.AccountDAO;
 import com.revature.daos.UserDAO;
 import com.revature.models.Account;
+import com.revature.models.Transaction;
 import com.revature.models.User;
 import com.revature.util.List;
 
@@ -142,27 +143,30 @@ public class UserService {
         return accountDAO.getAccountsByUserID(user);
     }
 
+    public List<Transaction> getTransactions(User user) {
+        return accountDAO.getTransactionsByUsername(user.getUserName());
+    }
+
     public String getUserNameFromAccount(int accountID) throws InvalidRequestException {
         String name = "";
         name = accountDAO.getUserNameFromAccount(accountID);
 
-        if (name.isEmpty())
+        if (name == null ||name.isEmpty())
             throw new InvalidRequestException("The account does not exist");
 
         return name;
     }
 
-    public boolean recordTransaction(String sender, int senderID, int recipientID, String transactionType, double amount) {
+    public Transaction recordTransaction(String sender, int senderID, int recipientID, String transactionType, double amount) throws ResourcePersistenceException {
         String recipient = "";
         try {
             recipient = getUserNameFromAccount(recipientID);
         } catch (InvalidRequestException e) {
-            e.printStackTrace();
-            return false;
+            System.err.println(e.getMessage());
         }
 
-        accountDAO.saveTransaction(sender, senderID, recipient, recipientID, transactionType,amount);
-        return true;
+        return accountDAO.saveTransaction(sender, senderID, recipient, recipientID, transactionType, amount)
+                    .orElseThrow(ResourcePersistenceException::new);
     }
 
 }
