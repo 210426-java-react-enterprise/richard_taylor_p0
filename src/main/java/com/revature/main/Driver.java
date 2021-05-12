@@ -13,8 +13,9 @@ public class Driver {
     public static void main(String[] args) {
         AppState app = getAppState();
 
+        app.getScreenRouter().navigate("/welcome");
         while (app.isAppRunning()) {
-            app.getScreenRouter().navigate("/welcome");
+                app.getScreenRouter().getCurrentScreen().render();
         }
     }
 
