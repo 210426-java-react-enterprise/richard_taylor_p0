@@ -162,7 +162,7 @@ public class UserService {
         try {
             recipient = getUserNameFromAccount(recipientID);
         } catch (InvalidRequestException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         return accountDAO.saveTransaction(sender, senderID, recipient, recipientID, transactionType, amount)

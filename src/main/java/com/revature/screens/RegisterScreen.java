@@ -40,7 +40,7 @@ public class RegisterScreen extends Screen {
 
             userService.registerUser(user);
         } catch (InvalidRequestException | ResourcePersistenceException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 }

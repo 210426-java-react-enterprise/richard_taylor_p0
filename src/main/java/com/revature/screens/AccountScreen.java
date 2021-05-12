@@ -67,7 +67,7 @@ public class AccountScreen extends Screen {
                     transaction = userService.recordTransaction(loggedInUser.getUserName(), activeAccount.getAccountID(), activeAccount.getAccountID(), "deposit", amount);
                     cache.getTransactions().add(transaction);
                 } catch (ResourcePersistenceException e) {
-                    e.printStackTrace();
+                    System.err.println(e.getMessage());
                 }
                 System.out.printf("Your new balance is: $%.2f\n", activeAccount.getBalance() + amount);
                 screenRouter.navigate("/dashboard");
@@ -79,7 +79,7 @@ public class AccountScreen extends Screen {
                     transaction = userService.recordTransaction(loggedInUser.getUserName(), activeAccount.getAccountID(), activeAccount.getAccountID(), "withdrawal", amount);
                     cache.getTransactions().add(transaction);
                 } catch (ResourcePersistenceException e) {
-                    e.printStackTrace();
+                    System.err.println(e.getMessage());
                 }
                 System.out.printf("Your new balance is: $%.2f\n", activeAccount.getBalance() - amount);
                 screenRouter.navigate("/dashboard");
@@ -95,7 +95,7 @@ public class AccountScreen extends Screen {
                         transaction = userService.recordTransaction(loggedInUser.getUserName(), activeAccount.getAccountID(), recipient, "transfer", amount);
                         cache.getTransactions().add(transaction);
                     } catch (ResourcePersistenceException e) {
-                        e.printStackTrace();
+                        System.err.println(e.getMessage());
                     }
                     System.out.println("Transfer successful!");
                 } else {

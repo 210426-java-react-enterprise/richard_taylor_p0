@@ -88,7 +88,7 @@ public class Dashboard extends Screen {
                             userService.getAccounts(loggedInUser), accountName)); //This has to be the most cursed statement I have ever written.
                     screenRouter.navigate("/account");
                 } catch (InvalidRequestException e) {
-                    e.printStackTrace();
+                    System.err.println(e.getMessage());
                 }
                 break;
             case "3":
