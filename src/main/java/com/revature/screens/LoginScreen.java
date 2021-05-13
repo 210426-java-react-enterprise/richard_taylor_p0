@@ -48,7 +48,7 @@ public class LoginScreen extends Screen {
             cache.setTransactions(userService.getTransactions(user)); //load transactions into memory so DB isn't queried every time user requests transactions.
             screenRouter.navigate("/dashboard");
         } else {
-            System.out.println("Login Failed :(");
+            System.out.println("Login Failed. Username or Password was incorrect.");
         }
     }
 }

@@ -6,6 +6,7 @@ import com.revature.daos.UserDAO;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import com.revature.util.Console;
+import com.revature.util.ScreenRouter;
 
 import java.util.Scanner;
 
@@ -13,11 +14,13 @@ public class RegisterScreen extends Screen {
 
     private Console console;
     private UserService userService;
+    private ScreenRouter screenRouter;
 
-    public RegisterScreen(Console console, UserService userService) {
+    public RegisterScreen(Console console, UserService userService, ScreenRouter screenRouter) {
         super("RegisterScreen", "/register");
         this.console = console;
         this.userService = userService;
+        this.screenRouter = screenRouter;
     }
 
     /**
@@ -39,6 +42,8 @@ public class RegisterScreen extends Screen {
             user.setAge(console.getInt("Enter your age: "));
 
             userService.registerUser(user);
+            System.out.println("Registration Successful!");
+            screenRouter.navigate("/login");
         } catch (InvalidRequestException | ResourcePersistenceException e) {
             System.err.println(e.getMessage());
         }

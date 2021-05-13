@@ -45,7 +45,7 @@ public class AppState {
         screenRouter.addScreen(new WelcomeScreen(console, screenRouter))
                 .addScreen(new LoginScreen(console, userDAO, screenRouter, cache, userService))
                 .addScreen(new Dashboard(console, screenRouter, userService, cache))
-                .addScreen(new RegisterScreen(console, userService))
+                .addScreen(new RegisterScreen(console, userService, screenRouter))
                 .addScreen(new AccountScreen(console, userDAO, screenRouter, accountDAO, cache, userService));
 
         System.out.println("Application ready");
