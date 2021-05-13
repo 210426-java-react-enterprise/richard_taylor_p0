@@ -10,5 +10,4 @@
 - Viewing balance
 - Multiple accounts to a single user
 - Balance transfers
-
-(Will update this if I implement more features, I at least want to implement transaction history.)
+- Transaction History
