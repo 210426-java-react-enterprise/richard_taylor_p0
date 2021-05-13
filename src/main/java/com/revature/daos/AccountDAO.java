@@ -191,6 +191,17 @@ public class AccountDAO {
         return false;
     }
 
+    /**
+     * Saves a transaction to the database.
+     *
+     * @param sender          The username of the sender
+     * @param senderID        The account ID of the sender
+     * @param recipient       The username of the recipient
+     * @param recipientID     The account ID of the recipient
+     * @param transactionType The type of transaction
+     * @param amount          The amount of the transaction
+     * @return The newly made transaction to be stored in Cache
+     */
     public Optional<Transaction> saveTransaction(String sender, int senderID, String recipient, int recipientID, String transactionType, double amount) {
 
         Optional<Transaction> _transaction = Optional.empty();
@@ -198,7 +209,7 @@ public class AccountDAO {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String query = "insert into project0.transactions (sender_name, sender_account, recipient_name, recipient_account, amount, transaction_type, transaction_date)\n" +
                     "values (?, ?, ?, ?, ?, ?, ?);";
-            String[] columns = new String[] {"transactionid", "sender_name", "sender_account", "recipient_name", "recipient_account",
+            String[] columns = new String[]{"transactionid", "sender_name", "sender_account", "recipient_name", "recipient_account",
                     "transaction_type", "amount", "transaction_date"};
 
             PreparedStatement stmt = conn.prepareStatement(query, columns);
@@ -234,9 +245,16 @@ public class AccountDAO {
         return _transaction;
     }
 
+    /**
+     * Queries the database to get all the transaction history of a user from the database. Done to store the transactions
+     * in the Cache object to minimize DB calls.
+     *
+     * @param username The username of the logged in user
+     * @return The list of transactions if they have any, null otherwise (should make this an Optional at some point)
+     */
     public List<Transaction> getTransactionsByUsername(String username) {
 
-        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             List<Transaction> transactions = new PoorArrayList<>();
             String query = "select * from project0.transactions\n" +
                     "where sender_name = ?\n" +
@@ -247,7 +265,7 @@ public class AccountDAO {
             stmt.setString(2, username);
 
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 Transaction transaction = new Transaction();
                 transaction.setTransactionID(rs.getInt("transactionid"));
                 transaction.setSender(rs.getString("sender_name"));
@@ -266,6 +284,12 @@ public class AccountDAO {
         return null;
     }
 
+    /**
+     * Takes in an account ID, then consults the junction table to find which user it belongs to.
+     *
+     * @param accountID The account ID passed in
+     * @return The username if the account exists, an empty string otherwise.
+     */
     public String getUserNameFromAccount(int accountID) {
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {

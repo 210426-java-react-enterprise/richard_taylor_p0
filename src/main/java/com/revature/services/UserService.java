@@ -81,20 +81,13 @@ public class UserService {
      * @return The account with the specified
      * @throws InvalidRequestException if the name specified does not match any accounts
      */
-    public Account getAccountByName(List<Account> accounts, String name) throws InvalidRequestException {
-
-        Account accountToReturn = null;
-        for (Account account : accounts) {
-            if (account.getName().equals(name)) {
-                accountToReturn = account;
-            }
-        }
-
-        if (accountToReturn == null)
-            throw new InvalidRequestException("The name specified did not match any accounts");
-
-        return accountToReturn;
+    public Account getAccountByName(List<Account> accounts, String name) throws InvalidRequestException { //streams are fancy and I love them
+        return accounts.stream()
+                .filter(account -> account.getName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new InvalidRequestException("That name does not match any of your accounts."));
     }
+
 
     /**
      * Gets a list of accounts by the user from the database. This method is to ensure account names are unique among users.
@@ -108,7 +101,7 @@ public class UserService {
         List<Account> accounts;
         accounts = accountDAO.getAccountsByUserID(user);
 
-        if(!(accounts == null)) {
+        if (!(accounts == null)) {
             for (Account account : accounts) {
                 if (account.getName().equals(name))
                     return true;
@@ -151,12 +144,24 @@ public class UserService {
         String name = "";
         name = accountDAO.getUserNameFromAccount(accountID);
 
-        if (name == null ||name.isEmpty())
+        if (name == null || name.isEmpty())
             throw new InvalidRequestException("The account does not exist");
 
         return name;
     }
 
+    /**
+     * Takes in data from a transaction be it a withdrawal, deposit, or transfer. Records this information to the database
+     * and stores the new transaction in the Cache object.
+     *
+     * @param sender          The sender username
+     * @param senderID        The account ID of the sender
+     * @param recipientID     The recipient username
+     * @param transactionType The account ID of the recipient
+     * @param amount          The amount of money that was exchanged
+     * @return The transaction record to be stored in cache
+     * @throws ResourcePersistenceException When there is an error with recording the transaction for whatever reason.
+     */
     public Transaction recordTransaction(String sender, int senderID, int recipientID, String transactionType, double amount) throws ResourcePersistenceException {
         String recipient = "";
         try {
@@ -166,7 +171,7 @@ public class UserService {
         }
 
         return accountDAO.saveTransaction(sender, senderID, recipient, recipientID, transactionType, amount)
-                    .orElseThrow(ResourcePersistenceException::new);
+                .orElseThrow(ResourcePersistenceException::new);
     }
 
 }
