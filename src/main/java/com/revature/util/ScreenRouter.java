@@ -14,7 +14,7 @@ public class ScreenRouter {
     private Screen currentScreen;
 
     /**
-     * Takes in a route for the screen, and calls the render method of the specified screen.
+     * Takes in a route for the screen, and sets the current screen to the route specified.
      *
      * @param route the route to be passed in
      */

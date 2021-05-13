@@ -140,6 +140,14 @@ public class UserService {
         return accountDAO.getTransactionsByUsername(user.getUserName());
     }
 
+    /**
+     * Acts as a layer of validation between the user and getUserNameFromAccount in the DAO.
+     * Returns a message to the user if it doesn't exist
+     *
+     * @param accountID The account ID supplied by the user
+     * @return The name of the user to be used in a transaction
+     * @throws InvalidRequestException If the account does not exist.
+     */
     public String getUserNameFromAccount(int accountID) throws InvalidRequestException {
         String name = "";
         name = accountDAO.getUserNameFromAccount(accountID);
